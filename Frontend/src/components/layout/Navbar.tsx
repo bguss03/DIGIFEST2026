@@ -13,7 +13,7 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 w-full h-15 z-20 bg-[#e9cfeb] shadow-md font-serif">
+    <nav className="fixed top-0 left-0 right-0 w-full h-16 z-20 bg-[#e9cfeb] shadow-md font-serif">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 px-2 sm:px-4 lg:px-20">
           <div className="shrink-0 flex items-center space-x-1 sm:space-x-2">
