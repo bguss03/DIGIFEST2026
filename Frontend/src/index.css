@@ -1,7 +1,5 @@
-/* 1. Import font dari Google di baris paling atas */
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+NO:wght@100..400&display=swap');
 
-/* 2. Import Tailwind dan DaisyUI (seperti sebelumnya) */
 @import "tailwindcss";
 
 
@@ -12,11 +10,6 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-}
-
-/* 3. Daftarkan font agar menjadi class Tailwind */
-@theme {
-  --font-playwrite: "Playwrite NO", cursive;
 }
 /* TextType */
 

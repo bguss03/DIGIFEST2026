@@ -13,16 +13,18 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 w-full h-16 z-20 bg-[#e9cfeb] shadow-md font-serif">
+    <nav className="fixed top-0 left-0 right-0 w-full h-16 z-20 bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px]  shadow-md font-serif">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 px-2 sm:px-4 lg:px-20">
           <div className="shrink-0 flex items-center space-x-1 sm:space-x-2">
             <div className="h-12 w-8 sm:h-20 sm:w-10 items-center justify-center flex">
-              <img src="/digifest-logo1.svg" alt="DIGIFEST Logo" />
+              <NavLink to="/">
+                <img src="/digifest-logo1.svg" alt="DIGIFEST Logo" />
+              </NavLink>
             </div>
             <NavLink
               to="/"
-              className="bg-[#e21c70] bg-clip-text text-transparent text-lg sm:text-2xl lg:text-4xl font-bold transition-all duration-300 font-serif"
+              className="bg-[#e21c70] bg-clip-text text-transparent text-lg sm:text-2xl lg:text-3xl font-bold transition-all duration-300 font-serif"
             >
               DIGIFEST
             </NavLink>
