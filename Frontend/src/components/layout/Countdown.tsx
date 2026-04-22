@@ -42,7 +42,6 @@ export default function Countdown() {
         </h1>
       </div>
 
-      {/* Container khusus untuk Kotak Countdown (Tetap menyamping) */}
       <div className="flex gap-0 sm:gap-6 text-center items-start">
         {/* Kotak Hari */}
         <div className="flex flex-col items-center group">
