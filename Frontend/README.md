@@ -1,73 +1,85 @@
-# React + TypeScript + Vite
+# DIGIFEST 2026 - Digital Innovation Grand Festival
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![DIGIFEST Logo](public/digifest-logo1.svg)
 
-Currently, two official plugins are available:
+**DIGIFEST 2026** adalah festival inovasi dan kompetisi teknologi tingkat nasional yang dirancang untuk mewadahi generasi muda dalam mengeksplorasi potensi digital dan menciptakan solusi inovatif.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌟 Tentang DIGIFEST
+Diselenggarakan oleh **Himpunan Mahasiswa Teknologi Informasi (HIMMATISI)** Universitas Semarang berkolaborasi dengan **Developer Community Universitas Semarang (DECOMUS)**.
 
-## React Compiler
+- **Tema:** "SYNERGY (System, Youth, and Next-Generation Technology)"
+- **Visi:** Menggabungkan kolaborasi sistem, kreativitas generasi muda, dan teknologi masa depan menjadi satu kesatuan visi yang berdampak.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🏆 Kategori Lomba & Kegiatan
+1. **GENETIC (Innovation System Challenge)**
+   - Kompetisi UI/UX Design dan Inovasi Sistem untuk siswa SMA/SMK sederajat.
+2. **D’NAMIC (Dance Competition)**
+   - Wadah kreativitas ekspresi budaya melalui inovasi seni tari.
+3. **IT COMPETITION & AWARDING**
+   - Pameran inovasi teknologi mahasiswa FTIK USM dan malam penganugerahan.
 
-## Expanding the ESLint configuration
+## 🚀 Teknologi yang Digunakan
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend
+- **Core:** [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations:** 
+  - [Framer Motion (Motion)](https://www.framer.com/motion/)
+  - [GSAP (GreenSock Animation Platform)](https://gsap.com/)
+- **Routing:** [React Router 7](https://reactrouter.com/)
+- **Icons:** [React Icons](https://react-icons.github.io/react-icons/)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📂 Struktur Proyek
+```text
+DIGIFEST/
+├── Frontend/           # Kode sumber aplikasi React (Vite)
+│   ├── src/
+│   │   ├── components/ # Komponen UI reusable (Navbar, Footer, dsb)
+│   │   ├── ui/pages/   # Komponen halaman (Hero, Tentang, Timeline, dsb)
+│   │   ├── lib/        # Library/utilitas kustom untuk animasi
+│   │   └── assets/     # Asset statis (Gambar, Logo)
+│   └── ...
+└── Backend/            # (In Progress)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Cara Menjalankan Proyek
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prasyarat
+- Node.js (versi terbaru direkomendasikan)
+- npm atau yarn
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Langkah-langkah
+1. **Clone repositori:**
+   ```bash
+   git clone https://github.com/username/digifest-2026.git
+   cd digifest-2026
+   ```
+
+2. **Masuk ke direktori Frontend:**
+   ```bash
+   cd Frontend
+   ```
+
+3. **Instal dependensi:**
+   ```bash
+   npm install
+   ```
+
+4. **Jalankan mode pengembangan:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Build untuk produksi:**
+   ```bash
+   npm run build
+   ```
+
+## 📅 Timeline Utama
+- **Pendaftaran:** 1 Mei – 15 Juni 2026
+- **Pengumpulan Karya:** s.d. 30 Juni 2026
+- **Final & Awarding:** 8 Juli 2026
+
+---
+Managed by **HIMMATISI USM** & **DECOMUS**.
