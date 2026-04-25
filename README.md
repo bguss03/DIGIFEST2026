@@ -1,6 +1,6 @@
 # DIGIFEST 2026 - Digital Innovation Grand Festival
 
-![DIGIFEST Logo](Frontend/public/digifest-logo1.svg)
+<img src="Frontend/public/digifest-logo1.svg" alt="DIGIFEST Logo" width="250">
 
 **DIGIFEST 2026** adalah festival inovasi dan kompetisi teknologi tingkat nasional yang dirancang untuk mewadahi generasi muda dalam mengeksplorasi potensi digital dan menciptakan solusi inovatif.
 
