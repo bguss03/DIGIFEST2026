@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
@@ -8,6 +9,7 @@ const categories = [
     description:
       "GENETIC merupakan kompetisi di bidang teknologi informasi yang ditujukan bagi siswa SMA/SMK sederajat untuk mengeksplorasi potensi digital mereka.",
     tags: ["UI/UX Design", "Innovation System Challenge"],
+    link: "/FormGenetic",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -31,8 +33,9 @@ const categories = [
     date: "1 Mei 2026 - 8 Juli 2026",
     location: "Online & Offline (USM)",
     description:
-      "D’NAMIC merupakan kompetisi seni tari sebagai wadah kreativitas dan ekspresi generasi muda dalam melestarikan budaya melalui inovasi.",
+      "D’NAMIC merupakan kompetisi dance modern sebagai wadah kreativitas dan ekspresi generasi muda dalam melestarikan budaya melalui inovasi.",
     tags: ["Seni Tari", "Kreativitas", "Ekspresi"],
+    link: "/FormDinamic",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -58,6 +61,7 @@ const categories = [
     description:
       "Pameran inovasi teknologi mahasiswa FTIK sebagai sarana apresiasi dan edukasi, ditutup dengan Awarding Celebration yang meriah.",
     tags: ["Pameran", "Networking", "Awarding"],
+    link: "/FormItcomp",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -82,6 +86,8 @@ const categories = [
 ];
 
 export default function Kategori() {
+  const navigate = useNavigate();
+
   return (
     <div id="Kategori" className="bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] py-16 px-6 min-h-screen font-montserrat">
       <div className="max-w-7xl mx-auto">
@@ -205,6 +211,7 @@ export default function Kategori() {
               {/* Button Section */}
               <div className="relative z-10 mt-auto">
                 <motion.button 
+                  onClick={() => navigate(item.link)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="w-full py-2.5 px-4 bg-[#e21c70] text-white rounded-xl font-bold text-sm transition-all duration-300 hover:bg-[#c11860] hover:shadow-lg hover:shadow-pink-500/30 flex items-center justify-center gap-2 group/btn

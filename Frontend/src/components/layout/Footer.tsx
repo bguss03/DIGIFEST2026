@@ -1,21 +1,29 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { FaInstagram, FaXTwitter, FaTiktok, FaWhatsapp, FaEnvelope } from "react-icons/fa6";
 
 export default function Footer() {
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLElement>, path: string) => {
     if (path.startsWith("#")) {
       e.preventDefault();
       const targetId = path.substring(1);
-      const element = document.getElementById(targetId);
-      if (element) {
-        const offset = 64;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      if (location.pathname === "/") {
+        const element = document.getElementById(targetId);
+        if (element) {
+          const offset = 64;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth"
-        });
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      } else {
+        navigate("/" + path);
       }
     }
   };
@@ -33,7 +41,6 @@ export default function Footer() {
                   <img src="/digifest-logo1.svg" alt="DIGIFEST Logo" className="h-12 w-auto" />
               </div>
               <h1
-                to="#Beranda"
                 onClick={(e) => handleNavClick(e, "#Beranda")}
                 className="bg-[#191b37] bg-clip-text text-transparent text-lg font-bold transition-all duration-300 font-montserrat"
               >
@@ -68,6 +75,13 @@ export default function Footer() {
                 className="text-[#191b37] hover:text-[#e21c70] transition-colors duration-300"
               >
                 Tentang
+              </NavLink>
+              <NavLink
+                to="#Tujuan"
+                onClick={(e) => handleNavClick(e, "#Tujuan")}  
+                className="text-[#191b37] hover:text-[#e21c70] transition-colors duration-300"
+              >
+                Tujuan
               </NavLink>
               <NavLink
                 to="#Kategori"

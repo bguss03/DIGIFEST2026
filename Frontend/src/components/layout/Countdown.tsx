@@ -32,17 +32,17 @@ export default function Countdown() {
 
   const padNum = (num: number) => String(num).padStart(2, "0");
 
- const boxStyle = "bg-[#e76297] text-white text-3xl sm:text-3xl lg:text-5xl font-bold py-3 sm:py-4 w-16 sm:w-20 lg:w-28 flex justify-center items-center tabular-nums rounded-xl drop-shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(226,28,112,0.4)] border-b-4 border-[#e9cfeb]";
+ const boxStyle = "bg-[#e76297] text-white text-2xl sm:text-3xl lg:text-5xl font-bold py-2 sm:py-4 w-14 sm:w-20 lg:w-28 flex justify-center items-center tabular-nums rounded-xl drop-shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(226,28,112,0.4)] border-b-4 border-[#e9cfeb]";
 
   return (
-    <div className="flex flex-col items-center gap-6 font-montserrat">
+    <div className="flex flex-col items-center gap-4 sm:gap-6 font-montserrat">
       <div className="text-center">
-        <h1 className="text-sm sm:text-sm lg:text-sm font-bold text-[#191b37] opacity-50 ">
+        <h1 className="text-xs sm:text-sm font-bold text-[#191b37] opacity-50 ">
           Pendaftaran Terakhir
         </h1>
       </div>
 
-      <div className="flex gap-0 sm:gap-6 text-center items-start">
+      <div className="flex gap-2 sm:gap-4 md:gap-6 text-center items-start">
         {/* Hari */}
         <div className="flex flex-col items-center group">
           <div className={boxStyle}>
@@ -52,7 +52,7 @@ export default function Countdown() {
             Hari
           </span>
         </div>
-        <div className="text-[#191b37] text-2xl sm:text-4xl font-bold mt-3 sm:mt-4 animate-pulse">
+        <div className="text-[#191b37] text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
           :
         </div>
         {/* Jam */}
@@ -64,7 +64,7 @@ export default function Countdown() {
             Jam
           </span>
         </div>
-        <div className="text-[#191b37] text-2xl sm:text-4xl font-bold mt-3 sm:mt-4 animate-pulse">
+        <div className="text-[#191b37] text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
           :
         </div>
 
@@ -77,11 +77,11 @@ export default function Countdown() {
             Menit
           </span>
         </div>
-        <div className="block text-[#191b37] text-2xl sm:text-4xl font-bold mt-4 animate-pulse">
+        <div className="text-[#191b37] text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
           :
         </div>
         {/* Detik */}
-        <div className="sm:flex flex-col items-center group">
+        <div className="flex flex-col items-center group">
           <div className={boxStyle}>
             {padNum(timeLeft.seconds)}
           </div>
