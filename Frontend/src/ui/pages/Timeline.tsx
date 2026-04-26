@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useState, useEffect } from "react";
 
 const timelineData = [
   { id: 1, title: "Pendaftaran Gelombang 1", date: "Sekarang – 15 Mei 2026", location: "Online", description: "Pendaftaran peserta lomba gelombang pertama." },
@@ -17,6 +18,15 @@ const timelineData = [
 ];
 
 export default function Timeline() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <div className="bg-[#fffffe] py-20 relative overflow-hidden" id="Timeline">
       {/* Decorative Background Elements */}
@@ -51,14 +61,18 @@ export default function Timeline() {
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-linear-to-b from-[#e21c70] via-[#e21c70]/50 to-transparent hidden md:block"></div>
           
           {/* Vertical Line - Mobile */}
-          <div className="absolute left-4 transform h-full w-0.5 bg-linear-to-b from-[#e21c70] via-[#e21c70]/50 to-transparent md:hidden"></div>
+          <div className="absolute left-8 transform -translate-x-1/2 h-full w-0.5 bg-linear-to-b from-[#e21c70] via-[#e21c70]/50 to-transparent md:hidden"></div>
 
           <div className="space-y-8">
             {timelineData.map((item, index) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ 
+                  opacity: 0, 
+                  x: isMobile ? 0 : (index % 2 === 0 ? 50 : -50),
+                  y: isMobile ? 20 : 0 
+                }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className={`flex flex-col md:flex-row items-center w-full ${
@@ -103,7 +117,7 @@ export default function Timeline() {
                 </div>
 
                 {/* The Dot on the line */}
-                <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-8 h-8 z-20">
+                <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-8 h-8 z-20">
                   <div className="w-4 h-4 bg-white border-4 border-[#e21c70] rounded-full shadow-[0_0_10px_rgba(226,28,112,0.5)]"></div>
                 </div>
 
