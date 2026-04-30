@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import LogoLoop from '../../lib/LogoLoop';  
+import LogoLoop from '@/components/ui/LogoLoop';  
 // import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiFramer, SiVite, SiNodedotjs, SiMongodb } from 'react-icons/si';
 
 const Sponsors = [

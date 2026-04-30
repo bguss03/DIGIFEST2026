@@ -12,7 +12,7 @@ import {
   FiLoader
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
-import supabase from "../../../lib/api/supabase-client";
+import supabase from "@/lib/api/supabase-client";
 
 type FormData = {
   instansi: string;
@@ -31,9 +31,6 @@ type FormData = {
   anggota3: string;
   suratAnggota3: File | null;
   buktiFollowAnggota3: File | null;
-  anggota4: string;
-  suratAnggota4: File | null;
-  buktiFollowAnggota4: File | null;
   batch: string;
   buktiBayar: File | null;
 };
@@ -61,21 +58,21 @@ const itemVariants = {
   },
 };
 
-export default function FormDinamic() {
+export default function FormGenetic() {
   const navigate = useNavigate();
   const [step, setStep] = useState(() => {
-    const savedStep = localStorage.getItem("form_dinamic_step");
+    const savedStep = localStorage.getItem("form_genetic_step");
     return savedStep ? parseInt(savedStep, 10) : 1;
   });
   const [isShaking, setIsShaking] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>(() => {
-    const savedData = localStorage.getItem("form_dinamic_data");
+    const savedData = localStorage.getItem("form_genetic_data");
     const defaultData = {
       instansi: "",
       namaTim: "",
-      kategori: "Seni Tari",
+      kategori: "UI UX",
       namaKetua: "",
       noKetua: "",
       suratKetua: null,
@@ -89,10 +86,7 @@ export default function FormDinamic() {
       anggota3: "",
       suratAnggota3: null,
       buktiFollowAnggota3: null,
-      anggota4: "",
-      suratAnggota4: null,
-      buktiFollowAnggota4: null,
-      batch: "Early Bird",
+      batch: "Batch I",
       buktiBayar: null,
     };
 
@@ -108,7 +102,7 @@ export default function FormDinamic() {
     return defaultData;
   });
 
-  const totalSteps = 7;
+  const totalSteps = 6;
 
   useEffect(() => {
     const dataToSave = { ...formData };
@@ -121,20 +115,18 @@ export default function FormDinamic() {
       "buktiFollowAnggota2",
       "suratAnggota3", 
       "buktiFollowAnggota3",
-      "suratAnggota4", 
-      "buktiFollowAnggota4",
       "buktiBayar"
     ];
     
     fileFields.forEach(field => {
-      delete (dataToSave as any)[field];
+      delete (dataToSave as Partial<FormData>)[field];
     });
 
-    localStorage.setItem("form_dinamic_data", JSON.stringify(dataToSave));
+    localStorage.setItem("form_genetic_data", JSON.stringify(dataToSave));
   }, [formData]);
 
   useEffect(() => {
-    localStorage.setItem("form_dinamic_step", step.toString());
+    localStorage.setItem("form_genetic_step", step.toString());
   }, [step]);
 
   const validateStep = () => {
@@ -149,9 +141,7 @@ export default function FormDinamic() {
         return formData.anggota2.trim() !== "" && formData.suratAnggota2 !== null && formData.buktiFollowAnggota2 !== null;
       case 5:
         return formData.anggota3.trim() !== "" && formData.suratAnggota3 !== null && formData.buktiFollowAnggota3 !== null;
-      case 6 :
-        return formData.anggota4.trim() !== "" && formData.suratAnggota4 !== null && formData.buktiFollowAnggota4 !== null;
-      case 7:
+      case 6:
         return formData.buktiBayar !== null;
       default:
         return true;
@@ -206,8 +196,7 @@ export default function FormDinamic() {
     { id: 3, label: "Anggota 1", icon: <FiUser /> },
     { id: 4, label: "Anggota 2", icon: <FiUser /> },
     { id: 5, label: "Anggota 3", icon: <FiUser /> },
-    { id: 6, label: "Anggota 4", icon: <FiUser /> },
-    { id: 7, label: "Pembayaran", icon: <FiCreditCard /> },
+    { id: 6, label: "Pembayaran", icon: <FiCreditCard /> },
   ];
 
   const uploadFile = async (file: File, folder: string) => {
@@ -243,7 +232,6 @@ export default function FormDinamic() {
         urlSuratA1, urlFollowA1,
         urlSuratA2, urlFollowA2,
         urlSuratA3, urlFollowA3,
-        urlSuratA4, urlFollowA4,
         urlBuktiBayar
       ] = await Promise.all([
         uploadFile(formData.suratKetua!, "surat_ketua"),
@@ -254,8 +242,6 @@ export default function FormDinamic() {
         uploadFile(formData.buktiFollowAnggota2!, "follow_a2"),
         uploadFile(formData.suratAnggota3!, "surat_a3"),
         uploadFile(formData.buktiFollowAnggota3!, "follow_a3"),
-        uploadFile(formData.suratAnggota4!, "surat_a4"),
-        uploadFile(formData.buktiFollowAnggota4!, "follow_a4"),
         uploadFile(formData.buktiBayar!, "bukti_bayar"),
       ]);
 
@@ -278,9 +264,6 @@ export default function FormDinamic() {
         anggota3_nama: formData.anggota3,
         anggota3_surat_url: urlSuratA3,
         anggota3_follow_url: urlFollowA3,
-        anggota4_nama: formData.anggota4,
-        anggota4_surat_url: urlSuratA4,
-        anggota4_follow_url: urlFollowA4,
         bukti_bayar_url: urlBuktiBayar,
       });
 
@@ -288,15 +271,16 @@ export default function FormDinamic() {
 
       alert("Selamat! Pendaftaran tim '" + formData.namaTim + "' berhasil terkirim. Panitia akan segera melakukan verifikasi.");
       
-      localStorage.removeItem("form_dinamic_data");
-      localStorage.removeItem("form_dinamic_step");
+      localStorage.removeItem("form_genetic_data");
+      localStorage.removeItem("form_genetic_step");
       
       // Kembali ke halaman utama
       navigate("/");
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Submission error:", error);
-      alert("Gagal melakukan pendaftaran. Silakan cek kembali koneksi internet Anda atau hubungi admin.\n\nDetail Error: " + error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      alert("Gagal melakukan pendaftaran. Silakan cek kembali koneksi internet Anda atau hubungi admin.\n\nDetail Error: " + message);
     } finally {
       setIsSubmitting(false);
     }
@@ -313,7 +297,7 @@ export default function FormDinamic() {
                 Kategori Lomba
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {["Seni Tari"].map((cat) => (
+                {["UI UX", "Innovation System Challenge"].map((cat) => (
                   <button
                     key={cat}
                     type="button"
@@ -340,7 +324,7 @@ export default function FormDinamic() {
                 required
                 value={formData.instansi}
                 onChange={handleChange}
-                placeholder="Contoh: SMK Ibu Kartini Semarang"
+                placeholder="Contoh: SMA Negeri 1 Semarang"
                 className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 backdrop-blur-sm ${
                   isInvalid(["instansi"]) ? "border-red-500 ring-2 ring-red-100" : "border-pink-400"
                 }`}
@@ -717,90 +701,7 @@ export default function FormDinamic() {
             </div>
           </motion.div>
         );
-        case 6:
-        return (
-          <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-            <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider">
-                Nama Anggota Tim - 4
-              </label>
-              <input
-                type="text"
-                name="anggota4"
-                required
-                value={formData.anggota4}
-                onChange={handleChange}
-                placeholder="Nama lengkap anggota 4"
-                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 backdrop-blur-sm ${
-                  isInvalid(["anggota4"]) ? "border-red-500 ring-2 ring-red-100" : "border-pink-400"
-                }`}
-              />
-            </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
-                  Surat Keterangan Siswa Aktif Anggota 4 
-                </label>
-                <div className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
-                  isInvalid(["suratAnggota4"]) 
-                  ? "border-red-500 bg-red-50/30" 
-                  : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
-                }`}>
-                  <input
-                    type="file"
-                    id="suratAnggota4"
-                    name="suratAnggota4"
-                    accept=".pdf"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                  <label htmlFor="suratAnggota4" className="cursor-pointer h-full flex flex-col items-center justify-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                      isInvalid(["suratAnggota4"]) ? "bg-red-100 text-red-500" : "bg-pink-100 text-[#e21c70]"
-                    }`}>
-                      <FiUploadCloud size={24} />
-                    </div>
-                    <p className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["suratAnggota3"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}>
-                      {formData.suratAnggota4 ? formData.suratAnggota4.name : "Klik untuk upload PDF"}
-                    </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
-                  </label>
-                </div>
-              </motion.div>
-              <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
-                  Bukti Follow IG @digifest.usm
-                </label>
-                <div className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
-                  isInvalid(["buktiFollowAnggota4"]) 
-                  ? "border-red-500 bg-red-50/30" 
-                  : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
-                }`}>
-                  <input
-                    type="file"
-                    id="buktiFollowAnggota4"
-                    name="buktiFollowAnggota4"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                  <label htmlFor="buktiFollowAnggota4" className="cursor-pointer h-full flex flex-col items-center justify-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                      isInvalid(["buktiFollowAnggota4"]) ? "bg-red-100 text-red-500" : "bg-pink-100 text-[#e21c70]"
-                    }`}>
-                      <FiUploadCloud size={24} />
-                    </div>
-                    <p className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["buktiFollowAnggota4"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}>
-                      {formData.buktiFollowAnggota4 ? formData.buktiFollowAnggota4.name : "Klik untuk upload Gambar"}
-                    </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
-                  </label>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        );
-      case 7:
+      case 6:
         return (
           <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
             <motion.div variants={itemVariants} className="p-5 rounded-2xl bg-linear-to-br from-pink-50 to-white border border-pink-200 shadow-sm">
@@ -821,11 +722,11 @@ export default function FormDinamic() {
                   <span className="text-sm font-bold text-[#191b37]">Fadilla Rahmadani Safira</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-pink-50 pb-2">
-                  <span className="text-xs text-[#191b37] font-medium">Early Bird</span>
+                  <span className="text-xs text-[#191b37] font-medium">Early Bird (Batch I)</span>
                   <span className="text-sm font-bold text-[#e21c70]">Rp. 50.000</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-[#191b37] font-medium">Normal Price</span>
+                  <span className="text-xs text-[#191b37] font-medium">Normal Price (Batch II)</span>
                   <span className="text-sm font-bold text-[#191b37]">Rp. 60.000</span>
                 </div>
               </div>
@@ -836,7 +737,7 @@ export default function FormDinamic() {
                 Pendaftaran Batch 
               </label>
               <div className="grid grid-cols-2 gap-4">
-                {["Early Bird", "Normal Price"].map((b) => (
+                {["Batch I", "Batch II"].map((b) => (
                   <button
                     key={b}
                     type="button"

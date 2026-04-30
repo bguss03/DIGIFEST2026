@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
-import '.../../../Frontend/src/index.css';
+import Navbar from "@/components/layout/Navbar";
+import '@/index.css';
 
-export default function FormItcomp() {
+export default function NotFound() {
     return (
         <div className="flex flex-col min-h-screen">
-            <div className="grow flex flex-col items-center justify-center bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] px-6 text-center font-montserrat pt-16">
+            <Navbar />
+            <main className="grow flex flex-col items-center justify-center bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] px-6 text-center font-montserrat pt-16">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -18,16 +20,26 @@ export default function FormItcomp() {
                         transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                     >
                         <h1 className="text-6xl sm:text-9xl font-black italic mb-2 tracking-tighter text-[#191b37] drop-shadow-[0_0_15px_rgba(226,28,112,0.3)]">
-                            COMING SOON
+                            404
                         </h1>
                     </motion.div>
+                    
+                    <motion.h2 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-2xl sm:text-4xl font-bold italic mb-6 text-[#e21c70]"
+                    >
+                        Halaman Tidak Ditemukan
+                    </motion.h2>
+                    
                     <motion.p 
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
                         className="text-sm sm:text-base max-w-md mb-10 text-[#191b37] opacity-80 leading-relaxed font-medium"
                     >
-                        Mohon maaf, halaman yang Anda tuju sedang dalam proses pengembangan.
+                        Maaf, halaman yang Anda cari tidak tersedia atau telah dipindahkan ke dimensi lain.
                     </motion.p>
                     
                     <motion.div
@@ -73,7 +85,7 @@ export default function FormItcomp() {
                         className="absolute bottom-[20%] right-[15%] w-16 h-16 border-4 border-[#191b37]/10 rounded-full hidden md:block"
                     />
                 </div>
-            </div>
+            </main>
         </div>
     );
 }

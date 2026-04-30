@@ -300,44 +300,66 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             </li>
           );
         }
-        const isNodeItem = 'node' in item;
-        const content = isNodeItem ? (
-          <span className="logoloop__node" aria-hidden={!!item.href && !item.ariaLabel}>
-            {(item as any).node}
-          </span>
-        ) : (
+
+        const href = item.href;
+        const title = item.title;
+
+        if ('node' in item) {
+          const content = (
+            <span className="logoloop__node" aria-hidden={!!href && !item.ariaLabel}>
+              {item.node}
+            </span>
+          );
+          const itemAriaLabel = item.ariaLabel ?? title;
+          return (
+            <li className="logoloop__item" key={key} role="listitem">
+              {href ? (
+                <a
+                  className="logoloop__link"
+                  href={href}
+                  aria-label={itemAriaLabel || 'logo link'}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {content}
+                </a>
+              ) : (
+                content
+              )}
+            </li>
+          );
+        }
+
+        const content = (
           <img
-            src={(item as any).src}
-            srcSet={(item as any).srcSet}
-            sizes={(item as any).sizes}
-            width={(item as any).width}
-            height={(item as any).height}
-            alt={(item as any).alt ?? ''}
-            title={(item as any).title}
+            src={item.src}
+            srcSet={item.srcSet}
+            sizes={item.sizes}
+            width={item.width}
+            height={item.height}
+            alt={item.alt ?? ''}
+            title={title}
             loading="lazy"
             decoding="async"
             draggable={false}
           />
         );
-        const itemAriaLabel = isNodeItem
-          ? ((item as any).ariaLabel ?? (item as any).title)
-          : ((item as any).alt ?? (item as any).title);
-        const itemContent = (item as any).href ? (
-          <a
-            className="logoloop__link"
-            href={(item as any).href}
-            aria-label={itemAriaLabel || 'logo link'}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {content}
-          </a>
-        ) : (
-          content
-        );
+        const itemAriaLabel = item.alt ?? title;
         return (
           <li className="logoloop__item" key={key} role="listitem">
-            {itemContent}
+            {href ? (
+              <a
+                className="logoloop__link"
+                href={href}
+                aria-label={itemAriaLabel || 'logo link'}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {content}
+              </a>
+            ) : (
+              content
+            )}
           </li>
         );
       },

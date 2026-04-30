@@ -1,5 +1,5 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { FaInstagram, FaXTwitter, FaTiktok, FaWhatsapp, FaEnvelope } from "react-icons/fa6";
+import { FaInstagram, FaTiktok, FaWhatsapp, FaEnvelope } from "react-icons/fa6";
 
 export default function Footer() {
   const navigate = useNavigate();
@@ -123,7 +123,6 @@ export default function Footer() {
             <div className="flex flex-row space-x-3 mt-8">
               {[
                 { icon: FaInstagram, url: "https://www.instagram.com/digifest.usm?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-                { icon: FaXTwitter, url: "https://x.com/" },
                 { icon: FaTiktok, url: "https://www.tiktok.com/" }
               ].map((social, index) => (
                 <a

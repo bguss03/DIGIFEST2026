@@ -1,5 +1,5 @@
-import ShinyText from "../../lib/ShinyText";
-import Countdown from "../../components/layout/Countdown";
+import ShinyText from "@/components/ui/ShinyText";
+import Countdown from "@/components/layout/Countdown";
 import { motion } from "motion/react";
 
 export default function Hero() {
