@@ -1212,7 +1212,7 @@ export default function FormItComp() {
 
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-[#191b37] mb-3 uppercase tracking-wider">
-                Pendaftaran Batch
+                Pendaftaran
               </label>
               <div className="grid grid-cols-2 gap-4">
                 {["Early Bird", "Normal Price"].map((b) => (

@@ -86,7 +86,7 @@ export default function FormGenetic() {
       anggota3: "",
       suratAnggota3: null,
       buktiFollowAnggota3: null,
-      batch: "Batch I",
+      batch: "Early Bird",
       buktiBayar: null,
     };
 
@@ -722,11 +722,11 @@ export default function FormGenetic() {
                   <span className="text-sm font-bold text-[#191b37]">Fadilla Rahmadani Safira</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-pink-50 pb-2">
-                  <span className="text-xs text-[#191b37] font-medium">Early Bird (Batch I)</span>
+                  <span className="text-xs text-[#191b37] font-medium">Early Bird</span>
                   <span className="text-sm font-bold text-[#e21c70]">Rp. 50.000</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-[#191b37] font-medium">Normal Price (Batch II)</span>
+                  <span className="text-xs text-[#191b37] font-medium">Normal Price</span>
                   <span className="text-sm font-bold text-[#191b37]">Rp. 60.000</span>
                 </div>
               </div>
@@ -734,10 +734,10 @@ export default function FormGenetic() {
 
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-[#191b37] mb-3 uppercase tracking-wider">
-                Pendaftaran Batch 
+                Pendaftaran
               </label>
               <div className="grid grid-cols-2 gap-4">
-                {["Batch I", "Batch II"].map((b) => (
+                {["Early Bird", "Normal Price"].map((b) => (
                   <button
                     key={b}
                     type="button"
