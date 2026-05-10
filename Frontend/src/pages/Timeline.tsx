@@ -1,132 +1,125 @@
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { useRef } from "react";
 
 const timelineData = [
-  { id: 1, title: "Pendaftaran Gelombang 1", date: "Sekarang – 15 Mei 2026", location: "Online", description: "Pendaftaran peserta lomba gelombang pertama." },
-  { id: 2, title: "Pendaftaran Gelombang 2", date: "16 Mei – 30 Mei 2026", location: "Online", description: "Pendaftaran peserta lomba gelombang kedua." },
-  { id: 3, title: "Pendaftaran Gelombang 3", date: "1 Juni - 14 Juni 2026", location: "Online", description: "Pendaftaran peserta lomba gelombang ketiga." },
-  { id: 4, title: "Penutupan Pendaftaran", date: "15 Juni 2026", location: "Online", description: "Batas akhir pendaftaran seluruh kategori lomba." },
-  { id: 5, title: "Technical Meeting Peserta", date: "16 Juni 2026", location: "Online", description: "Penjelasan teknis pelaksanaan lomba." },
-  { id: 6, title: "Pengerjaan Karya GENETIC & D’NAMIC", date: "1 Mei – 30 Juni 2026", location: "Online", description: "Periode pengerjaan karya bagi peserta." },
-  { id: 7, title: "Pengumpulan Karya GENETIC & D’NAMIC", date: "30 Juni 2026", location: "Online", description: "Batas akhir pengumpulan karya lomba." },
-  { id: 8, title: "Seleksi & Penilaian Karya GENETIC & D’NAMIC", date: "1 Juli 2026", location: "Online", description: "Proses seleksi dan penilaian oleh juri." },
-  { id: 9, title: "Pengumuman Finalis GENETIC & D’NAMIC", date: "2 Juli 2026", location: "Online", description: "Pengumuman peserta yang lolos ke babak final." },
-  { id: 10, title: "Technical Meeting Finalis", date: "3 Juli 2026", location: "Online", description: "Penjelasan teknis babak final." },
-  { id: 11, title: "Final Lomba GENETIC & D’NAMIC", date: "8 Juli 2026", location: "Offline", description: "Pelaksanaan babak final kategori utama." },
-  { id: 12, title: "IT Competition (Pameran & Voting)", date: "8 Juli 2026", location: "Offline", description: "Pameran karya dan sesi voting juara favorit." },
-  { id: 13, title: "Awarding Celebration (Penutupan)", date: "8 Juli 2026", location: "Offline", description: "Pengumuman pemenang dan penutupan acara." },
+  { id: 1, title: "Pendaftaran Gelombang 1 (Early Bird)", date: "Sekarang – 15 Mei 2026", location: "Online", description: "Pendaftaran peserta lomba gelombang pertama." },
+  { id: 2, title: "Pendaftaran Gelombang 2 (Normal Price)", date: "16 Mei – 30 Mei 2026", location: "Online", description: "Pendaftaran peserta lomba gelombang kedua." },
+  { id: 3, title: "Technical Meeting Peserta", date: "16 Juni 2026", location: "Online", description: "Penjelasan teknis pelaksanaan lomba." },
+  { id: 4, title: "Pengumpulan Karya GENETIC dan Creative Dance Competition", date: "1 Juni - 25 Juni 2026", location: "Online", description: "Batas akhir pengumpulan karya lomba." },
+  { id: 5, title: "Seleksi & Penilaian Karya GENETIC dan Creative Dance Competition", date: "26 Juni – 4 Juli 2026", location: "Online", description: "Proses seleksi dan penilaian oleh juri." },
+  { id: 6, title: "Pengumuman Finalis GENETIC dan Creative Dance Competition", date: "5 Juli 2026", location: "Online", description: "Pengumuman peserta lomba yang lolos ke babak final." },
+  { id: 7, title: "Final Lomba GENETIC & Creative Dance Competition", date: "9 Juli 2026", location: "Offline", description: "Pelaksanaan babak final lomba." },
+  { id: 8, title: "IT Competition (Pameran)", date: "9 Juli 2026", location: "Offline", description: "Pameran karya dan sesi voting juara favorit." },
+  { id: 9, title: "Awarding Celebration (Penutupan)", date: "9 Juli 2026", location: "Offline", description: "Pengumuman pemenang, pemberian penghargaan, dan hiburan." },
 ];
 
 export default function Timeline() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="bg-[#fffffe] py-20 relative overflow-hidden" id="Timeline">
+    <div 
+      className="min-h-screen bg-white bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] flex flex-col justify-center items-center relative overflow-hidden font-montserrat" 
+      id="Timeline"
+    >
       {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-[#e21c70] opacity-[0.03] rounded-full -mr-32 -mt-32 blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#e21c70] opacity-[0.03] rounded-full -ml-48 -mb-48 blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#e21c70] opacity-[0.05] rounded-full -mr-32 -mt-32 blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#e21c70] opacity-[0.05] rounded-full -ml-48 -mb-48 blur-3xl"></div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         {/* Header Section */}
-        <div className="flex flex-col items-center mb-16">
-          <div className="flex items-center w-full max-w-2xl mb-6">
+        <div className="flex flex-col items-center mb-12">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="flex items-center w-full max-w-2xl mb-6"
+          >
             <div className="h-0.5 bg-linear-to-r from-transparent to-[#e21c70] grow rounded-full"></div>
             <h2 className="px-6 text-sm sm:text-lg font-bold text-black uppercase tracking-[0.3em] text-center whitespace-nowrap">
               Jadwal Acara
             </h2>
             <div className="h-0.5 bg-linear-to-l from-transparent to-[#e21c70] grow rounded-full"></div>
-          </div>
+          </motion.div>
 
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-3xl sm:text-4xl text-center font-bold text-[#191b37] tracking-tight leading-tight font-montserrat"
+            className="text-3xl sm:text-4xl lg:text-5xl text-center font-bold text-[#191b37] tracking-tight leading-tight"
           >
             TIMELINE <span className="text-[#e21c70]">DIGIFEST</span> 2026
           </motion.h1>
         </div>
 
-        {/* Timeline Container */}
-        <div className="relative">
-          {/* Vertical Line - Desktop */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-linear-to-b from-[#e21c70] via-[#e21c70]/50 to-transparent hidden md:block"></div>
-          
-          {/* Vertical Line - Mobile */}
-          <div className="absolute left-8 transform -translate-x-1/2 h-full w-0.5 bg-linear-to-b from-[#e21c70] via-[#e21c70]/50 to-transparent md:hidden"></div>
-
-          <div className="space-y-8">
-            {timelineData.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ 
-                  opacity: 0, 
-                  x: isMobile ? 0 : (index % 2 === 0 ? 50 : -50),
-                  y: isMobile ? 20 : 0 
-                }}
-                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className={`flex flex-col md:flex-row items-center w-full ${
-                  index % 2 === 0 ? "md:flex-row-reverse" : ""
-                }`}
-              >
-                {/* Content Card */}
-                <div className="w-full md:w-5/12 px-4 md:px-0 ml-12 md:ml-0">
-                  <div className="bg-white border border-[#191b37]/10 shadow-lg rounded-2xl p-4 sm:p-6 hover:shadow-[0_0_20px_rgba(226,28,112,0.3)] transition-all duration-300 relative group">
-                    {/* Location Badge */}
-                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#e21c70]/5 text-[#e21c70] border border-[#e21c70]/10">
-                      {item.location}
-                    </div>
-
-                    <div className="flex flex-col">
-                      <div className="mb-3 bg-[#e21c70]/5 w-10 h-10 rounded-xl flex items-center justify-center border border-[#e21c70]/10 text-[#e21c70] font-bold text-lg font-montserrat">
-                        {item.id}
-                      </div>
-                      
-                      <h3 className="text-lg sm:text-xl font-bold text-[#191b37] mb-2 font-montserrat">
-                        {item.title}
-                      </h3>
-                      
-                      <p className="text-[#191b37]/70 text-xs sm:text-sm leading-relaxed mb-4 font-montserrat">
-                        {item.description}
-                      </p>
-
-                      {/* Date Footer */}
-                      <div className="flex items-center gap-3 pt-3 border-t border-[#191b37]/5">
-                        <div className="w-4 h-4 rounded-full bg-[#e21c70]/5 flex items-center justify-center text-[#e21c70]">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <p className="text-[8px] uppercase font-bold text-gray-400 tracking-wider">Tanggal</p>
-                          <p className="text-[#191b37] font-bold text-xs sm:text-sm font-montserrat">{item.date}</p>
-                        </div>
-                      </div>
-                    </div>
+        {/* Horizontal Timeline Container */}
+        <div 
+          ref={scrollRef}
+          className="flex overflow-x-auto gap-6 py-10 px-4 no-scrollbar cursor-grab active:cursor-grabbing snap-x scroll-smooth pb-12"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {timelineData.map((item, index) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="min-w-70 sm:min-w-[320px] snap-center flex flex-col"
+            >
+              <div className="bg-white/90 backdrop-blur-md border border-[#191b37]/5 shadow-xl rounded-4xl p-6 sm:p-8 hover:shadow-[0_0_30px_rgba(226,28,112,0.15)] transition-all duration-500 relative group grow flex flex-col justify-between">
+                {/* ID & Location */}
+                <div className="flex justify-between items-start mb-6">
+                  <div className="bg-[#e21c70] w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-pink-500/20">
+                    {item.id}
+                  </div>
+                  <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[#e21c70]/10 text-[#e21c70] border border-[#e21c70]/10">
+                    {item.location}
                   </div>
                 </div>
 
-                {/* The Dot on the line */}
-                <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-8 h-8 z-20">
-                  <div className="w-4 h-4 bg-white border-4 border-[#e21c70] rounded-full shadow-[0_0_10px_rgba(226,28,112,0.5)]"></div>
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-[#191b37] mb-3 leading-tight font-montserrat">
+                    {item.title}
+                  </h3>
+                  <p className="text-[#191b37]/70 text-sm leading-relaxed font-medium">
+                    {item.description}
+                  </p>
                 </div>
 
-                {/* Spacer for alternating layout */}
-                <div className="hidden md:block md:w-5/12"></div>
-              </motion.div>
-            ))}
-          </div>
+                {/* Date Footer */}
+                <div className="flex items-center gap-4 pt-5 border-t border-[#191b37]/5">
+                  <div className="w-5 h-5 rounded-xl bg-[#e21c70]/5 flex items-center justify-center text-[#e21c70] shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase font-black text-gray-400 tracking-widest">Tanggal</p>
+                    <p className="text-[#191b37] font-bold text-sm">{item.date}</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Navigation Hint */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="flex flex-col items-center mt-4 gap-3 text-[#191b37]/40 font-bold text-[10px] uppercase tracking-[0.2em]"
+        >
+          <span>Geser Horizontal</span>
+          <div className="w-24 h-1 bg-[#191b37]/5 rounded-full relative overflow-hidden">
+            <motion.div 
+              animate={{ x: [-100, 100] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              className="absolute inset-0 bg-[#e21c70]/20 w-1/2 rounded-full"
+            />
+          </div>
+        </motion.div>
       </div>
     </div>
   );

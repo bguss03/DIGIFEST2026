@@ -6,9 +6,8 @@ export default function Hero() {
   return (
     <div
       id="Beranda"
-      className="pt-35 pb-10 flex flex-col items-center bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] py-16 px-6 min-h-screen 
-      tserrat
-                    sm:justify-center gap-10 sm:gap-20 sm:flex-row lg:pt-20 sm:pt-0"
+      className="pt-30 pb-10 flex flex-col items-center bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] py-16 px-6 min-h-screen 
+      tserrat sm:justify-center gap-10 sm:gap-20 sm:flex-row lg:pt-20 sm:pt-0"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
@@ -60,8 +59,17 @@ export default function Hero() {
             Digital Innovation Grand Festival
           </h1>
         </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mb-8"
+        >
+           <p className="text-sm sm:text-base opacity-60 font-montserrat text-[#191b37] max-w-2xl text-center mx-auto">
+            Festival dan kompetisi inovasi digital tingkat nasional.
+          </p>
+        </motion.div>
 
-        {/* Fitur Hitung Mundur */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

@@ -17,7 +17,7 @@ export default function Faq() {
     {
       pertanyaan: "Kapan DIGIFEST 2026 akan diselenggarakan?",
       jawaban:
-        "DIGIFEST 2026 akan diselenggarakan pada bulan Mei hingga Juli 2026. Pendaftaran dibuka pada bulan Mei 2026, pengumpulan karya pada bulan Juni, penyisihan pada awal Juli, dan final pada bulan Juli 2026.",
+        "DIGIFEST 2026 akan diselenggarakan pada bulan Mei hingga Juli 2026. Pendaftaran dibuka pada bulan Mei 2026, dilanjutkan dengan babak penyisihan (pengumpulan karya) pada bulan Juni, dan babak final pada bulan Juli 2026.",
     },
     {
       pertanyaan: "Siapa yang dapat mengikuti DIGIFEST 2026?",

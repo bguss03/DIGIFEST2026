@@ -11,10 +11,11 @@ import {
   FiCheckCircle,
   FiLoader,
 } from "react-icons/fi";
+import { Turnstile } from "@marsidev/react-turnstile";
 import supabase from "@/lib/api/supabase-client";
+import StatusModal from "@/components/ui/StatusModal";
 
 type FormData = {
-  // instansi: string;
   namaTim: string;
   kategori: string;
   namaKetua: string;
@@ -74,10 +75,24 @@ export default function FormItComp() {
   const [isShaking, setIsShaking] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+
+  const [statusModal, setStatusModal] = useState<{
+    isOpen: boolean;
+    status: "success" | "error" | "warning" | null;
+    title: string;
+    message: React.ReactNode;
+    onAction?: () => void;
+  }>({
+    isOpen: false,
+    status: null,
+    title: "",
+    message: "",
+  });
+
   const [formData, setFormData] = useState<FormData>(() => {
     const savedData = localStorage.getItem("form_itcomp_data");
     const defaultData = {
-      // instansi: "",
       namaTim: "",
       kategori: "IT Competition",
       namaKetua: "",
@@ -101,7 +116,7 @@ export default function FormItComp() {
       nimAnggota4: "",
       suratAnggota4: null,
       buktiFollowAnggota4: null,
-      batch: "Early Bird",
+      batch: "Normal Price",
       buktiBayar: null,
     };
 
@@ -122,7 +137,6 @@ export default function FormItComp() {
   useEffect(() => {
     const dataToSave = { ...formData };
     const fileFields: (keyof FormData)[] = [
-      "suratKetua",
       "suratKetua",
       "buktiFollowKetua",
       "suratAnggota1",
@@ -188,7 +202,7 @@ export default function FormItComp() {
           formData.buktiFollowAnggota4 !== null
         );
       case 7:
-        return formData.buktiBayar !== null;
+        return formData.buktiBayar !== null && turnstileToken !== null;
       default:
         return true;
     }
@@ -234,7 +248,23 @@ export default function FormItComp() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
-      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+      const file = files[0];
+      const maxSize = 10 * 1024 * 1024; // 10MB
+
+      if (file.size > maxSize) {
+        setStatusModal({
+          isOpen: true,
+          status: "warning",
+          title: "File Terlalu Besar",
+          message: `Ukuran file "${file.name}" melebihi batas maksimal 10MB. Mohon unggah file yang lebih kecil.`,
+          onAction: () =>
+            setStatusModal((prev) => ({ ...prev, isOpen: false })),
+        });
+        // Reset input value agar user bisa memilih file yang sama setelah diperkecil
+        e.target.value = "";
+        return;
+      }
+      setFormData((prev) => ({ ...prev, [name]: file }));
     }
   };
 
@@ -272,6 +302,18 @@ export default function FormItComp() {
       return;
     }
 
+    if (!turnstileToken) {
+      setStatusModal({
+        isOpen: true,
+        status: "warning",
+        title: "Verifikasi Diperlukan",
+        message:
+          "Mohon centang kotak verifikasi keamanan (Turnstile) terlebih dahulu.",
+        onAction: () => setStatusModal((prev) => ({ ...prev, isOpen: false })),
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -302,9 +344,9 @@ export default function FormItComp() {
         uploadFile(formData.buktiBayar!, "bukti_bayar"),
       ]);
 
-      // 2. Simpan data ke tabel registrations
-      const { error } = await supabase.from("registrations").insert({
-        instansi: "-", // Mengirim nilai default karena tidak wajib untuk IT Competition
+      // 2. Mapping data untuk database payload
+      const dbPayload = {
+        instansi: "-",
         nama_tim: formData.namaTim,
         kategori: formData.kategori,
         batch: formData.batch,
@@ -330,32 +372,55 @@ export default function FormItComp() {
         anggota4_surat_url: urlSuratA4,
         anggota4_follow_url: urlFollowA4,
         bukti_bayar_url: urlBuktiBayar,
-      });
+      };
 
-      if (error) throw error;
-
-      alert(
-        "Selamat! Pendaftaran tim '" +
-          formData.namaTim +
-          "' berhasil terkirim. Panitia akan segera melakukan verifikasi.",
+      // 3. Panggil Edge Function untuk validasi Turnstile & bypass RLS
+      const { data, error: functionError } = await supabase.functions.invoke(
+        "submit-registrasi",
+        {
+          body: {
+            formData: dbPayload,
+            turnstileToken,
+          },
+        },
       );
+
+      // Pengecekan 1: Jika fungsi gagal dieksekusi (Network error, dll)
+      if (functionError) {
+        throw new Error(functionError.message);
+      }
+
+      // Pengecekan 2: Jika fungsi berhasil, tapi ada error dari validasi Deno (misal Turnstile gagal)
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
+
+      setStatusModal({
+        isOpen: true,
+        status: "success",
+        title: "Pendaftaran Berhasil!",
+        message: (
+          <>
+            Selamat! Pendaftaran tim{" "}
+            <span className="text-[#e21c70] font-bold">{formData.namaTim}</span>{" "}
+            berhasil terkirim. Panitia akan segera melakukan verifikasi.
+          </>
+        ),
+        onAction: () => navigate("/"),
+      });
 
       localStorage.removeItem("form_itcomp_data");
       localStorage.removeItem("form_itcomp_step");
-
-      // Kembali ke halaman utama
-      navigate("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Submission error:", error);
-      
-      // Jika error dari Supabase, biasanya ada di error.message
-      const message = error.message || 
-                     (typeof error === 'object' ? JSON.stringify(error) : String(error));
-      
-      alert(
-        "Gagal melakukan pendaftaran. Silakan cek kembali koneksi internet Anda atau hubungi admin.\n\nDetail Error: " +
-          message,
-      );
+      const message = error instanceof Error ? error.message : String(error);
+      setStatusModal({
+        isOpen: true,
+        status: "error",
+        title: "Pendaftaran Gagal",
+        message: `Gagal melakukan pendaftaran. ${message}`,
+        onAction: () => setStatusModal((prev) => ({ ...prev, isOpen: false })),
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -503,7 +568,7 @@ export default function FormItComp() {
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:gr7id-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <motion.div variants={itemVariants} className="flex flex-col">
                 <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
                   Surat Keterangan Mahasiswa Aktif / KTM
@@ -1173,14 +1238,16 @@ export default function FormItComp() {
                   <span className="text-xs text-[#191b37] font-medium">
                     Metode
                   </span>
-                  <span className="text-sm font-bold text-[#191b37]">DANA</span>
+                  <span className="text-sm font-bold text-[#191b37]">
+                    Sea Bank
+                  </span>
                 </div>
                 <div className="flex justify-between items-center border-b border-pink-50 pb-2">
                   <span className="text-xs text-[#191b37] font-medium">
                     Nomor
                   </span>
                   <span className="text-sm font-bold text-[#191b37]">
-                    087827934564
+                    901692349640
                   </span>
                 </div>
                 <div className="flex justify-between items-center border-b border-pink-50 pb-2">
@@ -1188,25 +1255,25 @@ export default function FormItComp() {
                     Atas Nama
                   </span>
                   <span className="text-sm font-bold text-[#191b37]">
-                    Fadilla Rahmadani Safira
+                    Ferdy
                   </span>
                 </div>
                 <div className="flex justify-between items-center border-b border-pink-50 pb-2">
                   <span className="text-xs text-[#191b37] font-medium">
-                    Early Bird
+                    Normal Price
                   </span>
                   <span className="text-sm font-bold text-[#e21c70]">
                     Rp. 50.000
                   </span>
                 </div>
-                <div className="flex justify-between items-center">
+                {/* <div className="flex justify-between items-center">
                   <span className="text-xs text-[#191b37] font-medium">
                     Normal Price
                   </span>
                   <span className="text-sm font-bold text-[#191b37]">
                     Rp. 60.000
                   </span>
-                </div>
+                </div> */}
               </div>
             </motion.div>
 
@@ -1215,7 +1282,7 @@ export default function FormItComp() {
                 Pendaftaran
               </label>
               <div className="grid grid-cols-2 gap-4">
-                {["Early Bird", "Normal Price"].map((b) => (
+                {["Normal Price"].map((b) => (
                   <button
                     key={b}
                     type="button"
@@ -1276,6 +1343,21 @@ export default function FormItComp() {
                 </label>
               </div>
             </motion.div>
+
+            <motion.div variants={itemVariants} className="space-y-3 pt-4">
+              <label className="block text-[10px] font-bold text-[#e21c70] uppercase tracking-[0.2em] text-center">
+                Verifikasi Keamanan
+              </label>
+              <div className="flex justify-center p-4 rounded-2xl bg-[#e9cfeb]/40 backdrop-blur-md border border-pink-200/50 shadow-inner scale-90 sm:scale-100">
+                <Turnstile
+                  siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                  onSuccess={(token) => setTurnstileToken(token)}
+                  options={{
+                    theme: "light",
+                  }}
+                />
+              </div>
+            </motion.div>
           </motion.div>
         );
 
@@ -1327,9 +1409,7 @@ export default function FormItComp() {
             Form Pendaftaran <span className="text-[#e21c70]">Tim</span>
           </h1>
           <p className="text-[#191b37] text-sm max-w-lg mx-auto leading-relaxed">
-            Simpan dan lengkapi data tim anda kapan pun anda siap. Tampilan form
-            telah disesuaikan agar tetap praktis, baik di layar dekstop maupun
-            mobile.
+            Lengkapi data satu tim secara bertahap.
           </p>
         </div>
 
@@ -1464,7 +1544,7 @@ export default function FormItComp() {
                 type="submit"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className={`flex items-center gap-2 px-8 py-3 rounded-xl text-white font-bold hover:shadow-xl transition-all ${
+                className={`flex items-center gap-2 px-4 py-4 sm:px-8 sm:py-3 rounded-xl text-white font-bold hover:shadow-xl transition-all ${
                   isSubmitting
                     ? "bg-pink-400 cursor-not-allowed"
                     : showErrors && !validateStep()
@@ -1496,6 +1576,15 @@ export default function FormItComp() {
           dimasukkan ulang.
         </motion.p>
       </motion.div>
+
+      <StatusModal
+        isOpen={statusModal.isOpen}
+        status={statusModal.status}
+        title={statusModal.title}
+        message={statusModal.message}
+        onAction={statusModal.onAction}
+        onClose={() => setStatusModal((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }

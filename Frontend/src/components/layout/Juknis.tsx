@@ -1,10 +1,15 @@
 import { LuBookOpenText } from 'react-icons/lu';
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Juknis() {
-    const handleToDrive = () => {
-    window.open("https://drive.google.com/drive/folders/1qkhQnLSbUc1uacleEwLxcBFg164NI2Wi?usp=sharing", "_blank", "noopener,noreferrer");
+  const navigate = useNavigate();
+  
+  const handleToJunlak = () => {
+    navigate("/Junlak");
+    window.scrollTo(0, 0);
   };
+
   return (
     // 1. Container Latar Belakang Melayang (Z-Index 50 agar paling atas)
     <motion.div 
@@ -13,7 +18,7 @@ export default function Juknis() {
       whileTap={{ scale: 0.9 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
       className="fixed flex items-center justify-center bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 hover:cursor-pointer" 
-      onClick={handleToDrive}
+      onClick={handleToJunlak}
     >
       <div className="absolute right-0 -mr-4 h-15 sm:h-20 w-15 sm:w-20 flex items-center justify-center bg-white rounded-full shadow-lg overflow-hidden ">
         <LuBookOpenText size={45} className="text-[#e21c70] p-1" />

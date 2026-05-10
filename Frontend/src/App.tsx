@@ -16,6 +16,8 @@ import FormGenetic from "@/pages/Form/FormGenetic"
 import FormDinamic from "@/pages/Form/FormDinamic"
 import NotFound from "@/pages/NotFound"
 import FormItcomp from "@/pages/Form/FormItcomp"
+import Event from "./pages/Event"
+import Junlak from "./pages/Junlak"
 
 export default function App() {
   const location = useLocation();
@@ -89,6 +91,28 @@ export default function App() {
         path='/FormItcomp'
         element= {
           <FormItcomp />
+        }
+        />
+        <Route  
+        path='/Event/*'
+        element= {
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="grow">
+              <Event />
+            </main>
+          </div>
+        }
+        />
+        <Route  
+        path='/Junlak'
+        element= {
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="grow">
+              <Junlak />
+            </main>
+          </div>
         }
         />
         <Route path="*" element={<NotFound />} />

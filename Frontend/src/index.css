@@ -33,3 +33,13 @@ body {
   --font-lato: "Lato", sans-serif;
   --font-garamond: "Garamond", serif;
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

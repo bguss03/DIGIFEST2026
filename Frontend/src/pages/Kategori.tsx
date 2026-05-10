@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 const categories = [
   {
     title: "GENETIC",
-    date: "1 Mei 2026 - 8 Juli 2026",
+    date: "1 Mei 2026 - 9 Juli 2026",
     location: "Online & Offline (USM)",
     description:
       "GENETIC merupakan kompetisi di bidang teknologi informasi yang ditujukan bagi siswa SMA/SMK sederajat untuk mengeksplorasi potensi digital mereka.",
-    tags: ["UI/UX Design", "Innovation System Challenge"],
-    link: "/FormGenetic",
+    tags: ["UI/UX Design Competition", "System Innovation Idea Competition"],
+    link: "/Event/GNT",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -29,13 +29,13 @@ const categories = [
     glow: "shadow-pink-500/20",
   },
   {
-    title: "D’NAMIC",
-    date: "1 Mei 2026 - 8 Juli 2026",
+    title: "Creative Dance Competition",
+    date: "1 Mei 2026 - 9 Juli 2026",
     location: "Online & Offline (USM)",
     description:
-      "D’NAMIC merupakan kompetisi dance modern sebagai wadah kreativitas dan ekspresi generasi muda dalam melestarikan budaya melalui inovasi.",
-    tags: ["Seni Tari", "Kreativitas", "Ekspresi"],
-    link: "/FormDinamic",
+      "Creative Dance Competition (CDC) merupakan kompetisi dance modern sebagai wadah kreativitas dan ekspresi generasi muda dalam melestarikan budaya melalui inovasi.",
+    tags: ["Dance Modern", "Kreativitas"],
+    link: "/Event/CDC",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -56,12 +56,12 @@ const categories = [
   },
   {
     title: "IT COMPETITION & AWARDING",
-    date: "8 Juli 2026",
+    date: "9 Juli 2026",
     location: "Auditorium USM",
     description:
       "Pameran inovasi teknologi mahasiswa FTIK sebagai sarana apresiasi dan edukasi, ditutup dengan Awarding Celebration yang meriah.",
     tags: ["Pameran", "Networking", "Awarding"],
-    link: "/FormItcomp",
+    link: "/Event/IC",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -217,7 +217,7 @@ export default function Kategori() {
                   className="w-full py-2.5 px-4 bg-[#e21c70] text-white rounded-xl font-bold text-sm transition-all duration-300 hover:bg-[#c11860] hover:shadow-lg hover:shadow-pink-500/30 flex items-center justify-center gap-2 group/btn
                   hover:cursor-pointer"
                 >
-                  <span>Daftar Sekarang</span>
+                  <span>Detail</span>
                   <svg
                     className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
                     fill="none"
