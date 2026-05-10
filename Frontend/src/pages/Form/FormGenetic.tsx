@@ -845,7 +845,7 @@ export default function FormGenetic() {
                   <span className="text-xs text-[#191b37] font-medium">
                     Metode
                   </span>
-                  <span className="text-sm font-bold text-[#191b37]">DANA</span>
+                  <span className="text-sm font-bold text-[#191b37]">Sea Bank</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-pink-50 pb-2">
                   <span className="text-xs text-[#191b37] font-medium">
