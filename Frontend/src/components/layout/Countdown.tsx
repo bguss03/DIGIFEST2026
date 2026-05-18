@@ -9,7 +9,7 @@ export default function Countdown() {
   });
 
   useEffect(() => {
-    const countDownDate = new Date("2026-06-15T00:00:00").getTime();
+    const countDownDate = new Date("2026-07-09T00:00:00").getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -32,15 +32,10 @@ export default function Countdown() {
 
   const padNum = (num: number) => String(num).padStart(2, "0");
 
- const boxStyle = "bg-[#e76297] text-white text-2xl sm:text-3xl lg:text-5xl font-bold py-2 sm:py-4 w-14 sm:w-20 lg:w-28 flex justify-center items-center tabular-nums rounded-xl drop-shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(226,28,112,0.4)] border-b-4 border-[#e9cfeb]";
+ const boxStyle = "bg-brand-sun text-white text-2xl sm:text-3xl lg:text-5xl font-bold py-2 sm:py-4 w-14 sm:w-20 lg:w-28 flex justify-center items-center tabular-nums rounded-xl drop-shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(242,169,0,0.4)] border-b-4 border-brand-sand";
 
   return (
     <div className="flex flex-col items-center gap-4 sm:gap-6 font-montserrat">
-      <div className="text-center">
-        <h1 className="text-xs sm:text-sm font-bold text-[#191b37] opacity-50 ">
-          Pendaftaran Terakhir
-        </h1>
-      </div>
 
       <div className="flex gap-2 sm:gap-4 md:gap-6 text-center items-start">
         {/* Hari */}
@@ -48,11 +43,11 @@ export default function Countdown() {
           <div className={boxStyle}>
             {padNum(timeLeft.days)}
           </div>
-          <span className="text-[#191b37] text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-[#e21c70] transition-colors">
+          <span className="text-white text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-brand-sun transition-colors">
             Hari
           </span>
         </div>
-        <div className="text-[#191b37] text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
+        <div className="text-white text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
           :
         </div>
         {/* Jam */}
@@ -60,11 +55,11 @@ export default function Countdown() {
           <div className={boxStyle}>
             {padNum(timeLeft.hours)}
           </div>
-          <span className="text-[#191b37] text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-[#e21c70] transition-colors">
+          <span className="text-white text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-brand-sun transition-colors">
             Jam
           </span>
         </div>
-        <div className="text-[#191b37] text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
+        <div className="text-white text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
           :
         </div>
 
@@ -73,11 +68,11 @@ export default function Countdown() {
           <div className={boxStyle}>
             {padNum(timeLeft.minutes)}
           </div>
-          <span className="text-[#191b37] text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-[#e21c70] transition-colors">
+          <span className="text-white text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-brand-sun transition-colors">
             Menit
           </span>
         </div>
-        <div className="text-[#191b37] text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
+        <div className="text-white text-xl sm:text-4xl font-bold mt-2 sm:mt-4 animate-pulse">
           :
         </div>
         {/* Detik */}
@@ -85,7 +80,7 @@ export default function Countdown() {
           <div className={boxStyle}>
             {padNum(timeLeft.seconds)}
           </div>
-          <span className="text-[#191b37] text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-[#e21c70] transition-colors">
+          <span className="text-white text-[10px] sm:text-sm font-bold mt-2 uppercase tracking-widest group-hover:text-brand-sun transition-colors">
             Detik
           </span>
         </div>

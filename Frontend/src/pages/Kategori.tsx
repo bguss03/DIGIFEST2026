@@ -89,7 +89,7 @@ export default function Kategori() {
   const navigate = useNavigate();
 
   return (
-    <div id="Kategori" className="bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] py-16 px-6 min-h-screen font-montserrat">
+    <div id="Kategori" className="bg-transparent bg-[radial-gradient(#F2A90022_1px,transparent_1px)] bg-size-[20px_20px] py-16 px-6 min-h-screen font-montserrat">
       <div className="max-w-7xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
@@ -98,11 +98,11 @@ export default function Kategori() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="flex items-center w-full max-w-2xl mx-auto mb-6"
         >
-          <div className="h-0.5 bg-linear-to-r from-transparent to-[#e21c70] grow rounded-full"></div>
-          <h2 className="px-6 ml-[0.3em] text-sm sm:text-lg font-bold text-black uppercase tracking-[0.3em] text-center whitespace-nowrap">
+          <div className="h-0.5 bg-linear-to-r from-transparent to-brand-sun grow rounded-full"></div>
+          <h2 className="px-6 ml-[0.3em] text-sm sm:text-lg font-bold text-white uppercase tracking-[0.3em] text-center whitespace-nowrap">
             Kegiatan Utama
           </h2>
-          <div className="h-0.5 bg-linear-to-l from-transparent to-[#e21c70] grow rounded-full"></div>
+          <div className="h-0.5 bg-linear-to-l from-transparent to-brand-sun grow rounded-full"></div>
         </motion.div>
 
         <motion.h1
@@ -113,9 +113,9 @@ export default function Kategori() {
             duration: 0.8, 
             ease: [0.21, 0.47, 0.32, 0.98] 
           }}
-          className="px-4 text-3xl sm:text-4xl text-center font-bold mb-12 text-[#191b37] font-montserrat"
+          className="px-4 text-3xl sm:text-4xl text-center font-bold mb-12 text-white font-montserrat"
         >
-          Kategori <span className="text-[#e21c70]">Lomba</span>
+          Kategori <span className="text-brand-sun">Lomba</span>
         </motion.h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch max-w-6xl mx-auto">
@@ -136,21 +136,21 @@ export default function Kategori() {
                 y: -10,
                 transition: { duration: 0.3, ease: "easeOut" }
               }}
-              className="relative group bg-[#fffffe] rounded-3xl p-5 sm:p-6 border border-white/10 overflow-hidden flex flex-col transition-all duration-500 hover:border-[#e21c70]/30 hover:shadow-[0_20px_40px_rgba(226,28,112,0.15)]"
+              className="relative group bg-brand-midnight/60 backdrop-blur-xl rounded-3xl p-5 sm:p-6 border border-white/10 overflow-hidden flex flex-col transition-all duration-500 hover:border-brand-sun/30 hover:shadow-[0_20px_40px_rgba(242,169,0,0.15)]"
             >
               <div
-                className={`absolute inset-0 bg-linear-to-br ${item.color} opacity-0 hover:shadow-[0_0_20px_rgba(226,28,112,0.4)] transition-all duration-300`}
+                className={`absolute inset-0 bg-linear-to-br ${item.color} opacity-0 hover:shadow-[0_0_20px_rgba(242,169,0,0.4)] transition-all duration-300`}
               />
 
               <div className="relative z-10 grow flex flex-col">
                 <div className="flex items-start gap-4 mb-4">
                   {/* Icon */}
-                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[#e21c70] group-hover:scale-110 transition-transform duration-500">
+                  <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-brand-sun group-hover:scale-110 transition-transform duration-500">
                     {item.icon}
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg sm:text-xl font-bold text-[#191b37] leading-tight uppercase font-montserrat
+                  <h3 className="text-lg sm:text-xl font-bold text-white leading-tight uppercase font-montserrat
                    tracking-wide pt-1 min-h-14 flex items-center">
                     {item.title}
                   </h3>
@@ -158,9 +158,9 @@ export default function Kategori() {
 
                 {/* Info List */}
                 <div className="space-y-1.5 mb-4">
-                  <div className="flex items-center gap-3 text-[#191b37] font-semibold text-xs sm:text-sm">
+                  <div className="flex items-center gap-3 text-white font-semibold text-xs sm:text-sm">
                     <svg
-                      className="w-4 h-4 text-[#e21c70]"
+                      className="w-4 h-4 text-brand-sun"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -172,9 +172,9 @@ export default function Kategori() {
                     </svg>
                     <span>{item.date}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-[#191b37] font-semibold text-xs sm:text-sm">
+                  <div className="flex items-center gap-3 text-white font-semibold text-xs sm:text-sm">
                     <svg
-                      className="w-4 h-4 text-[#e21c70]"
+                      className="w-4 h-4 text-brand-sun"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -187,7 +187,7 @@ export default function Kategori() {
                 </div>
 
                 {/* Deskripsi */}
-                <p className="text-[#191b37]/70 text-xs sm:text-sm leading-relaxed mb-4 font-montserrat
+                <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-4 font-montserrat
                 ">
                   {item.description}
                 </p>
@@ -200,7 +200,7 @@ export default function Kategori() {
                   {item.tags.map((tag, tIndex) => (
                     <span
                       key={tIndex}
-                      className="px-3 py-1 rounded-lg bg-[#e21c70]/5 text-[#e21c70] text-[10px] sm:text-xs font-bold border border-[#e21c70]/10 whitespace-nowrap"
+                      className="px-3 py-1 rounded-lg bg-brand-sun/5 text-brand-sun text-[10px] sm:text-xs font-bold border border-brand-sun/10 whitespace-nowrap"
                     >
                       {tag}
                     </span>
@@ -214,7 +214,7 @@ export default function Kategori() {
                   onClick={() => navigate(item.link)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-2.5 px-4 bg-[#e21c70] text-white rounded-xl font-bold text-sm transition-all duration-300 hover:bg-[#c11860] hover:shadow-lg hover:shadow-pink-500/30 flex items-center justify-center gap-2 group/btn
+                  className="w-full py-2.5 px-4 bg-brand-sun text-brand-midnight rounded-xl font-bold text-sm transition-all duration-300 hover:bg-brand-sun/90 hover:shadow-lg hover:shadow-brand-sun/30 flex items-center justify-center gap-2 group/btn
                   hover:cursor-pointer"
                 >
                   <span>Detail</span>
@@ -234,7 +234,7 @@ export default function Kategori() {
                 </motion.button>
               </div>
 
-              <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-[#e21c70] blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+              <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-brand-sun blur-[100px] opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
             </motion.div>
           ))}
         </div>

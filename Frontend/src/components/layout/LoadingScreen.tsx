@@ -18,7 +18,7 @@ export default function LoadingScreen() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-[#191b37]"
+          className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-brand-midnight"
         >
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
@@ -32,15 +32,15 @@ export default function LoadingScreen() {
             className="flex flex-col items-center"
           >
             <img
-              src="/digifest-logo1.svg"
+              src="/digifest1.svg"
               alt="Digifest Logo"
-              className="h-32 w-32 mb-4"
+              className="h-35 w-35 mb-4"
             />
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
               transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="h-1 bg-[#e21c70] rounded-full w-48 overflow-hidden"
+              className="h-1 bg-brand-sun rounded-full w-48 overflow-hidden"
             >
               <motion.div
                 animate={{
@@ -51,10 +51,10 @@ export default function LoadingScreen() {
                   repeat: Infinity,
                   ease: "linear",
                 }}
-                className="h-full w-full bg-[#fdf2f8] opacity-50"
+                className="h-full w-full bg-white/20"
               />
             </motion.div>
-            <p className="mt-4 text-[#fdf2f8] font-mono text-sm tracking-widest uppercase">
+            <p className="mt-4 text-white font-mono text-sm tracking-widest uppercase">
               Loading Digital Innovation...
             </p>
           </motion.div>

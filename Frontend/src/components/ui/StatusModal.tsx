@@ -23,24 +23,24 @@ export default function StatusModal({
       case "success":
         return {
           icon: <FiCheckCircle className="text-green-500" size={32} />,
-          bgColor: "bg-green-50/50",
-          accentColor: "bg-[#e21c70]",
-          hoverColor: "hover:bg-[#c0175e]",
+          bgColor: "bg-green-50/10",
+          accentColor: "bg-brand-sun",
+          hoverColor: "hover:bg-brand-sun/80",
         };
       case "warning":
         return {
           icon: <FiAlertTriangle className="text-yellow-500" size={32} />,
-          bgColor: "bg-yellow-50/50",
-          accentColor: "bg-[#191b37]",
-          hoverColor: "hover:bg-[#0f1124]",
+          bgColor: "bg-yellow-50/10",
+          accentColor: "bg-brand-midnight",
+          hoverColor: "hover:bg-brand-midnight/80",
         };
       case "error":
       default:
         return {
           icon: <FiXCircle className="text-red-500" size={32} />,
-          bgColor: "bg-red-50/50",
-          accentColor: "bg-[#191b37]",
-          hoverColor: "hover:bg-[#0f1124]",
+          bgColor: "bg-red-50/10",
+          accentColor: "bg-brand-midnight",
+          hoverColor: "hover:bg-brand-midnight/80",
         };
     }
   };

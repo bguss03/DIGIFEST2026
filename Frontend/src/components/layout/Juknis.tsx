@@ -20,16 +20,16 @@ export default function Juknis() {
       className="fixed flex items-center justify-center bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 hover:cursor-pointer" 
       onClick={handleToJunlak}
     >
-      <div className="absolute right-0 -mr-4 h-15 sm:h-20 w-15 sm:w-20 flex items-center justify-center bg-white rounded-full shadow-lg overflow-hidden ">
-        <LuBookOpenText size={45} className="text-[#e21c70] p-1" />
+      <div className="absolute right-0 -mr-4 h-15 sm:h-20 w-15 sm:w-20 flex items-center justify-center bg-brand-midnight/60 backdrop-blur-xl border border-white/10 rounded-full shadow-lg overflow-hidden ">
+        <LuBookOpenText size={45} className="text-brand-sun p-1" />
       </div>
 
       <button
-        className="flex items-center h-10 sm:h-16 bg-linear-to-r from-[#cc3399] via-[#cc3399] to-[#6666cc] hover:cursor-pointer text-white rounded-full shadow-lg pr-15 sm:pe-20 pl-8"
+        className="flex items-center h-10 sm:h-16 bg-linear-to-r from-brand-sun to-brand-sand hover:cursor-pointer text-brand-midnight rounded-full shadow-lg pr-15 sm:pe-20 pl-8"
         aria-label="Buka Juknis"
       >
         <span className="text-sm sm:text-lg font-bold font-montserrat whitespace-nowrap ">
-          Juklak Juknis
+          Guidebook
         </span>
       </button>
 

@@ -2,15 +2,38 @@
 
 @import "tailwindcss";
 
+@theme {
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-lato: "Lato", sans-serif;
+  --font-garamond: "Garamond", serif;
+
+  /* Brand Colors from New Design Identity */
+  --color-brand-sun: #F2A900;
+  --color-brand-ocean: #003087;
+  --color-brand-sand: #FFE264;
+  --color-brand-sky: #307FE2;
+  --color-brand-midnight: #00205B;
+  --color-brand-white: #FFFFFF;
+  --color-brand-black: #000000;
+}
 
 body {
-  background-color: #e9cfeb;
-  background-image: radial-gradient(#e21c7022 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-color: var(--color-brand-ocean);
+  /* Mesh gradient inspired by the brand identity image */
+  background-image: 
+    radial-gradient(at 0% 0%, var(--color-brand-ocean) 0%, transparent 70%),
+    radial-gradient(at 100% 0%, var(--color-brand-sun) 0%, transparent 70%),
+    radial-gradient(at 100% 100%, var(--color-brand-sky) 0%, transparent 70%),
+    radial-gradient(at 0% 100%, var(--color-brand-midnight) 0%, transparent 70%);
+  background-attachment: fixed;
+  background-size: cover;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  color: white;
+  font-family: var(--font-montserrat);
 }
+
 /* TextType */
 
 .text-type {
@@ -26,12 +49,6 @@ body {
 
 .text-type__cursor--hidden {
   display: none;
-}
-
-@theme {
-  --font-montserrat: "Montserrat", sans-serif;
-  --font-lato: "Lato", sans-serif;
-  --font-garamond: "Garamond", serif;
 }
 
 @layer utilities {

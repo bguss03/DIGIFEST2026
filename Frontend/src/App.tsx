@@ -18,6 +18,8 @@ import NotFound from "@/pages/NotFound"
 import FormItcomp from "@/pages/Form/FormItcomp"
 import Event from "./pages/Event"
 import Junlak from "./pages/Junlak"
+import FormSubmitGenetic from "./pages/Submit-Karya/FormSubmitGenetic"
+import FormSubmitDinamic from "./pages/Submit-Karya/FormSubmitDinamic"
 
 export default function App() {
   const location = useLocation();
@@ -115,6 +117,8 @@ export default function App() {
           </div>
         }
         />
+        <Route path='/SubmitGenetic' element={<FormSubmitGenetic />} />
+        <Route path='/SubmitDinamic' element={<FormSubmitDinamic />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

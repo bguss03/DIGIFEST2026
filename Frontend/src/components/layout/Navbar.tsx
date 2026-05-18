@@ -85,24 +85,18 @@ export default function Navbar() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 w-full h-16 z-50 transition-all duration-300 font-montserrat ${
         isScrolled
-          ? "bg-[#e9cfeb]/70 backdrop-blur-md shadow-md"
-          : "bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px]"
+          ? "bg-brand-midnight/60 backdrop-blur-md shadow-md"
+          : "bg-transparent"
       }`}
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 px-2 sm:px-4 lg:px-20">
           <div className="shrink-0 flex items-center space-x-1 sm:space-x-2">
-            <div className="h-10 w-10 sm:h-12 sm:w-12 items-center justify-center flex">
+            <div className="h-20 w-20 sm:h-20 sm:w-20 items-center justify-center flex">
               <NavLink to="/" onClick={(e) => handleNavClick(e, "#Beranda")}>
-                <img src="/digifest-logo1.svg" alt="DIGIFEST Logo" className="h-full w-full object-contain" />
+                <img src="/digifest.svg" alt="DIGIFEST Logo" className="h-full w-full object-contain" />
               </NavLink>
             </div>
-            <NavLink
-              to="/"
-              className="bg-[#191b37] bg-clip-text text-transparent text-sm sm:text-md font-bold transition-all duration-300 font-montserrat"
-            >
-              DIGIFEST
-            </NavLink>
           </div>
 
           <div className="hidden md:block">
@@ -126,7 +120,7 @@ export default function Navbar() {
                           handleNavClick(e, item.path);
                         }
                       }}
-                      className="text-[#191b37] hover:text-pink-600 px-3 py-2 rounded-md text-md font-bold transition-colors duration-300 font-montserrat flex items-center gap-1 cursor-pointer"
+                      className="text-white hover:text-brand-sun px-3 py-2 rounded-md text-md font-bold transition-colors duration-300 font-montserrat flex items-center gap-1 cursor-pointer"
                     >
                       {item.name}
                       {item.dropdown && (
@@ -157,7 +151,7 @@ export default function Navbar() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-[#191b37]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden py-2 z-50"
+                          className="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-brand-midnight/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden py-2 z-50"
                         >
                           {item.dropdown.map((dropItem) => (
                             <NavLink
@@ -183,7 +177,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-700 hover:text-pink-600 focus:outline-none focus:text-pink-600 p-2"
+              className="text-white hover:text-brand-sun focus:outline-none focus:text-brand-sun p-2"
             >
               <svg
                 className="h-6 w-6 fill-current"
@@ -217,19 +211,19 @@ export default function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed md:hidden left-0 right-0 w-full bg-[#e9cfeb]/95 backdrop-blur-lg z-10 border-b border-pink-300 overflow-hidden"
+              className="fixed md:hidden left-0 right-0 w-full bg-brand-midnight/95 backdrop-blur-lg z-10 border-b border-white/10 overflow-hidden"
             >
               <ul className="flex flex-col items-center justify-center py-4">
                 {menuItems.map((item) => (
                   <li
                     key={item.name}
-                    className="border-b border-pink-300/30 w-full text-center last:border-b-0"
+                    className="border-b border-white/10 w-full text-center last:border-b-0"
                   >
                     {item.dropdown ? (
                       <div className="flex flex-col w-full">
                         <button
                           onClick={() => setMobileDropdownOpen(mobileDropdownOpen === item.name ? null : item.name)}
-                          className="text-[#191b37] hover:text-pink-600 w-full px-6 py-4 text-sm font-bold transition-colors duration-300 flex items-center justify-center gap-2"
+                          className="text-white hover:text-brand-sun w-full px-6 py-4 text-sm font-bold transition-colors duration-300 flex items-center justify-center gap-2"
                         >
                           {item.name}
                           <svg
@@ -255,7 +249,7 @@ export default function Navbar() {
                                 <NavLink
                                   key={dropItem.name}
                                   to={dropItem.path}
-                                  className="block px-6 py-3 text-[#191b37] hover:text-pink-600 text-xs font-semibold"
+                                  className="block px-6 py-3 text-white/80 hover:text-brand-sun text-xs font-semibold"
                                   onClick={() => {
                                     setIsOpen(false);
                                     setMobileDropdownOpen(null);
@@ -271,7 +265,7 @@ export default function Navbar() {
                     ) : (
                       <NavLink
                         to={item.path}
-                        className="text-[#191b37] hover:text-pink-600 block px-6 py-4 text-sm font-bold transition-colors duration-300"
+                        className="text-white hover:text-brand-sun block px-6 py-4 text-sm font-bold transition-colors duration-300"
                         onClick={(e) => handleNavClick(e, item.path)}
                       >
                         {item.name}

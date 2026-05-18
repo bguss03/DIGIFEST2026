@@ -10,6 +10,7 @@ import {
   FiUploadCloud,
   FiCheckCircle,
   FiLoader,
+  FiDownload,
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -24,15 +25,19 @@ type FormData = {
   noKetua: string;
   suratKetua: File | null;
   buktiFollowKetua: File | null;
+  buktiPostKetua: File | null;
   anggota1: string;
   suratAnggota1: File | null;
   buktiFollowAnggota1: File | null;
+  buktiPostA1: File | null;
   anggota2: string;
   suratAnggota2: File | null;
   buktiFollowAnggota2: File | null;
+  buktiPostA2: File | null;
   anggota3: string;
   suratAnggota3: File | null;
   buktiFollowAnggota3: File | null;
+  buktiPostA3: File | null;
   batch: string;
   buktiBayar: File | null;
 };
@@ -58,6 +63,12 @@ const itemVariants = {
       damping: 12,
     },
   },
+};
+
+const GROUP_LINKS: Record<string, string> = {
+  "UI UX": "https://chat.whatsapp.com/CCj4QfDDQRiEpMOOlmRiPt",
+  "Innovation System Challenge":
+    "https://chat.whatsapp.com/EImhllNLHtwBWasLwrE0Zm",
 };
 
 export default function FormGenetic() {
@@ -111,15 +122,19 @@ export default function FormGenetic() {
       noKetua: "",
       suratKetua: null,
       buktiFollowKetua: null,
+      buktiPostKetua: null,
       anggota1: "",
       suratAnggota1: null,
       buktiFollowAnggota1: null,
+      buktiPostA1: null,
       anggota2: "",
       suratAnggota2: null,
       buktiFollowAnggota2: null,
+      buktiPostA2: null,
       anggota3: "",
       suratAnggota3: null,
       buktiFollowAnggota3: null,
+      buktiPostA3: null,
       batch: isEarlyBirdActive ? "Early Bird" : "Normal Price",
       buktiBayar: null,
     };
@@ -143,12 +158,16 @@ export default function FormGenetic() {
     const fileFields: (keyof FormData)[] = [
       "suratKetua",
       "buktiFollowKetua",
+      "buktiPostKetua",
       "suratAnggota1",
       "buktiFollowAnggota1",
+      "buktiPostA1",
       "suratAnggota2",
       "buktiFollowAnggota2",
+      "buktiPostA2",
       "suratAnggota3",
       "buktiFollowAnggota3",
+      "buktiPostA3",
       "buktiBayar",
     ];
 
@@ -174,19 +193,22 @@ export default function FormGenetic() {
           formData.namaKetua.trim() !== "" &&
           formData.noKetua.trim() !== "" &&
           formData.suratKetua !== null &&
-          formData.buktiFollowKetua !== null
+          formData.buktiFollowKetua !== null &&
+          formData.buktiPostKetua !== null
         );
       case 3:
         return (
           formData.anggota1.trim() !== "" &&
           formData.suratAnggota1 !== null &&
-          formData.buktiFollowAnggota1 !== null
+          formData.buktiFollowAnggota1 !== null &&
+          formData.buktiPostA1 !== null
         );
       case 4:
         return (
           formData.anggota2.trim() !== "" &&
           formData.suratAnggota2 !== null &&
-          formData.buktiFollowAnggota2 !== null
+          formData.buktiFollowAnggota2 !== null &&
+          formData.buktiPostA2 !== null
         );
       case 5:
         return formData.buktiBayar !== null && turnstileToken !== null;
@@ -235,7 +257,21 @@ export default function FormGenetic() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
-      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+      const file = files[0];
+      const maxSize = 10 * 1024 * 1024; // 10MB
+
+      if (file.size > maxSize) {
+        setStatusModal({
+          isOpen: true,
+          status: "warning",
+          title: "File Terlalu Besar",
+          message: `Ukuran file "${file.name}" melebihi batas maksimal 10MB. Mohon unggah file yang lebih kecil.`,
+          onAction: () => setStatusModal((prev) => ({ ...prev, isOpen: false })),
+        });
+        e.target.value = "";
+        return;
+      }
+      setFormData((prev) => ({ ...prev, [name]: file }));
     }
   };
 
@@ -276,7 +312,8 @@ export default function FormGenetic() {
         isOpen: true,
         status: "warning",
         title: "Verifikasi Diperlukan",
-        message: "Mohon centang kotak verifikasi keamanan (Turnstile) terlebih dahulu.",
+        message:
+          "Mohon centang kotak verifikasi keamanan (Turnstile) terlebih dahulu.",
         onAction: () => setStatusModal((prev) => ({ ...prev, isOpen: false })),
       });
       return;
@@ -289,18 +326,24 @@ export default function FormGenetic() {
       const [
         urlSuratKetua,
         urlFollowKetua,
+        urlPostKetua,
         urlSuratA1,
         urlFollowA1,
+        urlPostA1,
         urlSuratA2,
         urlFollowA2,
+        urlPostA2,
         urlBuktiBayar,
       ] = await Promise.all([
         uploadFile(formData.suratKetua!, "surat_ketua"),
         uploadFile(formData.buktiFollowKetua!, "follow_ketua"),
+        uploadFile(formData.buktiPostKetua!, "post_ketua"),
         uploadFile(formData.suratAnggota1!, "surat_a1"),
         uploadFile(formData.buktiFollowAnggota1!, "follow_a1"),
+        uploadFile(formData.buktiPostA1!, "post_a1"),
         uploadFile(formData.suratAnggota2!, "surat_a2"),
         uploadFile(formData.buktiFollowAnggota2!, "follow_a2"),
+        uploadFile(formData.buktiPostA2!, "post_a2"),
         uploadFile(formData.buktiBayar!, "bukti_bayar"),
       ]);
 
@@ -314,53 +357,77 @@ export default function FormGenetic() {
         no_ketua: formData.noKetua,
         surat_ketua_url: urlSuratKetua,
         bukti_follow_ketua_url: urlFollowKetua,
+        bukti_post_ketua_url: urlPostKetua,
         anggota1_nama: formData.anggota1,
         anggota1_surat_url: urlSuratA1,
         anggota1_follow_url: urlFollowA1,
+        anggota1_post_url: urlPostA1,
         anggota2_nama: formData.anggota2,
         anggota2_surat_url: urlSuratA2,
         anggota2_follow_url: urlFollowA2,
+        anggota2_post_url: urlPostA2,
         bukti_bayar_url: urlBuktiBayar,
       };
 
       // 3. Panggil Edge Function untuk validasi Turnstile & bypass RLS
       const { data, error: functionError } = await supabase.functions.invoke(
-              "submit-registrasi",
-              {
-                body: {
-                  formData: dbPayload,
-                  turnstileToken,
-                },
-              },
-            );
-      
-            // Pengecekan 1: Jika fungsi gagal dieksekusi (Network error, dll)
-            if (functionError) {
-              throw new Error(functionError.message);
-            }
-      
-            // Pengecekan 2: Jika fungsi berhasil, tapi ada error dari validasi Deno (misal Turnstile gagal)
-            if (data && data.error) {
-              throw new Error(data.error);
-            }
+        "submit-registrasi",
+        {
+          body: {
+            formData: dbPayload,
+            turnstileToken,
+          },
+        },
+      );
 
-      // if (functionError) {
-      //   console.error("Function Error Details:", functionError);
-      //   console.error("Response Data:", data);
-      //   const errorMsg = data?.error || functionError.message;
-      //   throw new Error(errorMsg);
-      // }
+      // Pengecekan 1: Jika fungsi gagal dieksekusi (Network error, dll)
+      if (functionError) {
+        throw new Error(functionError.message);
+      }
+
+      // Pengecekan 2: Jika fungsi berhasil, tapi ada error dari validasi Deno (misal Turnstile gagal)
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
+
+      const groupLink =
+        GROUP_LINKS[formData.kategori] || "https://chat.whatsapp.com/";
 
       setStatusModal({
         isOpen: true,
         status: "success",
         title: "Pendaftaran Berhasil!",
         message: (
-          <>
-            Selamat! Pendaftaran tim{" "}
-            <span className="text-[#e21c70] font-bold">{formData.namaTim}</span>{" "}
-            berhasil terkirim. Panitia akan segera melakukan verifikasi.
-          </>
+          <div className="space-y-4">
+            <p>
+              Selamat! Pendaftaran tim{" "}
+              <span className="text-brand-sun font-bold">
+                {formData.namaTim}
+              </span>{" "}
+              berhasil terkirim. Panitia akan segera melakukan verifikasi.
+            </p>
+            {/* Container Grup WhatsApp */}
+            <div className="w-full bg-green-50/10 border border-green-500/20 rounded-2xl p-4 mb-6 backdrop-blur-sm">
+              {/* Label Peringatan */}
+              <p className="text-[10px] sm:text-xs font-bold text-green-400 text-center uppercase tracking-wider mb-3">
+                Wajib Bergabung ke Grup WhatsApp
+              </p>
+
+              {/* Tombol WhatsApp */}
+              <a
+                href={groupLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Gabung Grup WhatsApp ${formData.kategori}`}
+                className="flex items-center justify-center gap-2 w-full py-5 px-4 bg-[#25D366] text-white font-bold rounded-xl shadow-md shadow-green-200/60 hover:bg-[#128C7E] hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 transition-all duration-200 ease-in-out"
+              >
+                <FaWhatsapp className="text-xl" />
+                <span className="truncate">
+                  Gabung Grup {formData.kategori}
+                </span>
+              </a>
+            </div>
+          </div>
         ),
         onAction: () => navigate("/"),
       });
@@ -393,7 +460,7 @@ export default function FormGenetic() {
             className="space-y-6"
           >
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-3 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-3 uppercase tracking-wider">
                 Kategori Lomba
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -406,8 +473,8 @@ export default function FormGenetic() {
                     }
                     className={`py-3 px-4 rounded-xl border transition-all flex items-center justify-center gap-2 text-sm font-bold ${
                       formData.kategori === cat
-                        ? "bg-[#e21c70] text-white border-transparent shadow-lg shadow-pink-200"
-                        : "bg-[#e9cfeb]/50 border-pink-200 text-[#191b37] hover:bg-[#e9cfeb]"
+                        ? "bg-brand-sun text-brand-midnight border-transparent shadow-lg shadow-brand-sun/20"
+                        : "bg-white/5 border-white/10 text-white hover:bg-white/10"
                     }`}
                   >
                     {formData.kategori === cat && <FiCheckCircle />}
@@ -417,7 +484,7 @@ export default function FormGenetic() {
               </div>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
                 Nama Instansi Sekolah SMA/SMK Sederajat
               </label>
               <input
@@ -427,15 +494,15 @@ export default function FormGenetic() {
                 value={formData.instansi}
                 onChange={handleChange}
                 placeholder="Contoh: SMA Negeri 1 Semarang"
-                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 backdrop-blur-sm ${
+                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 backdrop-blur-sm text-white ${
                   isInvalid(["instansi"])
-                    ? "border-red-500 ring-2 ring-red-100"
-                    : "border-pink-400"
+                    ? "border-red-500 ring-2 ring-red-500/20"
+                    : "border-white/10"
                 }`}
               />
             </motion.div>
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
                 Nama Tim
               </label>
               <input
@@ -445,10 +512,10 @@ export default function FormGenetic() {
                 value={formData.namaTim}
                 onChange={handleChange}
                 placeholder="Contoh: Bigetron"
-                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 backdrop-blur-sm ${
+                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 backdrop-blur-sm text-white ${
                   isInvalid(["namaTim"])
-                    ? "border-red-500 ring-2 ring-red-100"
-                    : "border-pink-400"
+                    ? "border-red-500 ring-2 ring-red-500/20"
+                    : "border-white/10"
                 }`}
               />
             </motion.div>
@@ -463,7 +530,7 @@ export default function FormGenetic() {
             className="space-y-6"
           >
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
                 Nama Ketua Tim
               </label>
               <input
@@ -473,19 +540,19 @@ export default function FormGenetic() {
                 value={formData.namaKetua}
                 onChange={handleChange}
                 placeholder="Nama lengkap ketua"
-                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 backdrop-blur-sm ${
+                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 backdrop-blur-sm text-white ${
                   isInvalid(["namaKetua"])
-                    ? "border-red-500 ring-2 ring-red-100"
-                    : "border-pink-400"
+                    ? "border-red-500 ring-2 ring-red-500/20"
+                    : "border-white/10"
                 }`}
               />
             </motion.div>
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
                 Nomor Whatsapp Ketua Tim
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#191b37]">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-sun">
                   <FaWhatsapp />
                 </span>
                 <input
@@ -495,24 +562,24 @@ export default function FormGenetic() {
                   value={formData.noKetua}
                   onChange={handleChange}
                   placeholder="08xxxxxxxxxx"
-                  className={`w-full pl-11 pr-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 ${
+                  className={`w-full pl-11 pr-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 text-white ${
                     isInvalid(["noKetua"])
-                      ? "border-red-500 ring-2 ring-red-100"
-                      : "border-pink-400"
+                      ? "border-red-500 ring-2 ring-red-500/20"
+                      : "border-white/10"
                   }`}
                 />
               </div>
             </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
                   Bukti Foto/Scan Kartu Pelajar (Ketua)
                 </label>
                 <div
-                  className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
                     isInvalid(["suratKetua"])
-                      ? "border-red-500 bg-red-50/30"
-                      : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
                 >
                   <input
@@ -528,34 +595,34 @@ export default function FormGenetic() {
                     className="cursor-pointer h-full flex flex-col items-center justify-center"
                   >
                     <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 group-hover:scale-110 transition-transform ${
                         isInvalid(["suratKetua"])
-                          ? "bg-red-100 text-red-500"
-                          : "bg-pink-100 text-[#e21c70]"
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
                       }`}
                     >
-                      <FiUploadCloud size={24} />
+                      <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["suratKetua"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["suratKetua"]) ? "text-red-500 font-semibold" : "text-white"}`}
                     >
                       {formData.suratKetua
                         ? formData.suratKetua.name
                         : "Klik untuk upload Gambar"}
                     </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
                   </label>
                 </div>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
                   Bukti Follow IG @digifest.usm (Ketua)
                 </label>
                 <div
-                  className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
                     isInvalid(["buktiFollowKetua"])
-                      ? "border-red-500 bg-red-50/30"
-                      : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
                 >
                   <input
@@ -573,20 +640,63 @@ export default function FormGenetic() {
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
                         isInvalid(["buktiFollowKetua"])
-                          ? "bg-red-100 text-red-500"
-                          : "bg-pink-100 text-[#e21c70]"
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
                       }`}
                     >
-                      <FiUploadCloud size={24} />
+                      <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["buktiFollowKetua"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiFollowKetua"]) ? "text-red-600 font-semibold" : "text-white"}`}
                     >
                       {formData.buktiFollowKetua
                         ? formData.buktiFollowKetua.name
                         : "Klik untuk upload Gambar"}
                     </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
+                  </label>
+                </div>
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex flex-col">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
+                  Bukti Post Poster di Story (Ketua)
+                </label>
+                <div
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
+                    isInvalid(["buktiPostKetua"])
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
+                  }`}
+                >
+                  <input
+                    type="file"
+                    id="buktiPostKetua"
+                    name="buktiPostKetua"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="buktiPostKetua"
+                    className="cursor-pointer h-full flex flex-col items-center justify-center"
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
+                        isInvalid(["buktiPostKetua"])
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
+                      }`}
+                    >
+                      <FiUploadCloud size={20} />
+                    </div>
+                    <p
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiPostKetua"]) ? "text-red-500 font-semibold" : "text-white"}`}
+                    >
+                      {formData.buktiPostKetua
+                        ? formData.buktiPostKetua.name
+                        : "Klik untuk upload Gambar"}
+                    </p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
                   </label>
                 </div>
               </motion.div>
@@ -602,7 +712,7 @@ export default function FormGenetic() {
             className="space-y-6"
           >
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
                 Nama Anggota Tim - 1
               </label>
               <input
@@ -612,23 +722,23 @@ export default function FormGenetic() {
                 value={formData.anggota1}
                 onChange={handleChange}
                 placeholder="Nama lengkap anggota 1"
-                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 backdrop-blur-sm ${
+                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 backdrop-blur-sm text-white ${
                   isInvalid(["anggota1"])
-                    ? "border-red-500 ring-2 ring-red-100"
-                    : "border-pink-400"
+                    ? "border-red-500 ring-2 ring-red-500/20"
+                    : "border-white/10"
                 }`}
               />
             </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
                   Bukti Foto/Scan Kartu Pelajar (Anggota 1)
                 </label>
                 <div
-                  className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
                     isInvalid(["suratAnggota1"])
-                      ? "border-red-500 bg-red-50/30"
-                      : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
                 >
                   <input
@@ -646,32 +756,32 @@ export default function FormGenetic() {
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
                         isInvalid(["suratAnggota1"])
-                          ? "bg-red-100 text-red-500"
-                          : "bg-pink-100 text-[#e21c70]"
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
                       }`}
                     >
-                      <FiUploadCloud size={24} />
+                      <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["suratAnggota1"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["suratAnggota1"]) ? "text-red-500 font-semibold" : "text-white"}`}
                     >
                       {formData.suratAnggota1
                         ? formData.suratAnggota1.name
                         : "Klik untuk upload Gambar"}
                     </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
                   </label>
                 </div>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
                   Bukti Follow IG @digifest.usm (Anggota 1)
                 </label>
                 <div
-                  className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
                     isInvalid(["buktiFollowAnggota1"])
-                      ? "border-red-500 bg-red-50/30"
-                      : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
                 >
                   <input
@@ -689,20 +799,63 @@ export default function FormGenetic() {
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
                         isInvalid(["buktiFollowAnggota1"])
-                          ? "bg-red-100 text-red-500"
-                          : "bg-pink-100 text-[#e21c70]"
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
                       }`}
                     >
-                      <FiUploadCloud size={24} />
+                      <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["buktiFollowAnggota1"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiFollowAnggota1"]) ? "text-red-600 font-semibold" : "text-white"}`}
                     >
                       {formData.buktiFollowAnggota1
                         ? formData.buktiFollowAnggota1.name
                         : "Klik untuk upload Gambar"}
                     </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
+                  </label>
+                </div>
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex flex-col">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
+                  Bukti Post Poster di Story (Anggota 1)
+                </label>
+                <div
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
+                    isInvalid(["buktiPostA1"])
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
+                  }`}
+                >
+                  <input
+                    type="file"
+                    id="buktiPostA1"
+                    name="buktiPostA1"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="buktiPostA1"
+                    className="cursor-pointer h-full flex flex-col items-center justify-center"
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
+                        isInvalid(["buktiPostA1"])
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
+                      }`}
+                    >
+                      <FiUploadCloud size={20} />
+                    </div>
+                    <p
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiPostA1"]) ? "text-red-500 font-semibold" : "text-white"}`}
+                    >
+                      {formData.buktiPostA1
+                        ? formData.buktiPostA1.name
+                        : "Klik untuk upload Gambar"}
+                    </p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
                   </label>
                 </div>
               </motion.div>
@@ -718,7 +871,7 @@ export default function FormGenetic() {
             className="space-y-6"
           >
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
                 Nama Anggota Tim - 2
               </label>
               <input
@@ -728,23 +881,23 @@ export default function FormGenetic() {
                 value={formData.anggota2}
                 onChange={handleChange}
                 placeholder="Nama lengkap anggota 2"
-                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-[#e21c70] focus:border-transparent outline-none transition-all bg-[#e9cfeb]/50 backdrop-blur-sm ${
+                className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 backdrop-blur-sm text-white ${
                   isInvalid(["anggota2"])
-                    ? "border-red-500 ring-2 ring-red-100"
-                    : "border-pink-400"
+                    ? "border-red-500 ring-2 ring-red-500/20"
+                    : "border-white/10"
                 }`}
               />
             </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
                   Bukti Foto/Scan Kartu Pelajar (Anggota 2)
                 </label>
                 <div
-                  className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
                     isInvalid(["suratAnggota2"])
-                      ? "border-red-500 bg-red-50/30"
-                      : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
                 >
                   <input
@@ -762,32 +915,32 @@ export default function FormGenetic() {
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
                         isInvalid(["suratAnggota2"])
-                          ? "bg-red-100 text-red-500"
-                          : "bg-pink-100 text-[#e21c70]"
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
                       }`}
                     >
-                      <FiUploadCloud size={24} />
+                      <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["suratAnggota2"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["suratAnggota2"]) ? "text-red-500 font-semibold" : "text-white"}`}
                     >
                       {formData.suratAnggota2
                         ? formData.suratAnggota2.name
                         : "Klik untuk upload Gambar"}
                     </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
                   </label>
                 </div>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col">
-                <label className="block text-sm font-semibold text-[#191b37] mb-1 uppercase tracking-wider md:min-h-12">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
                   Bukti Follow IG @digifest.usm (Anggota 2)
                 </label>
                 <div
-                  className={`grow border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
                     isInvalid(["buktiFollowAnggota2"])
-                      ? "border-red-500 bg-red-50/30"
-                      : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
                 >
                   <input
@@ -805,20 +958,63 @@ export default function FormGenetic() {
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
                         isInvalid(["buktiFollowAnggota2"])
-                          ? "bg-red-100 text-red-500"
-                          : "bg-pink-100 text-[#e21c70]"
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
                       }`}
                     >
-                      <FiUploadCloud size={24} />
+                      <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["buktiFollowAnggota2"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiFollowAnggota2"]) ? "text-red-600 font-semibold" : "text-white"}`}
                     >
                       {formData.buktiFollowAnggota2
                         ? formData.buktiFollowAnggota2.name
                         : "Klik untuk upload Gambar"}
                     </p>
-                    <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
+                  </label>
+                </div>
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex flex-col">
+                <label className="block text-[10px] font-semibold text-white mb-1 uppercase tracking-wider md:min-h-12">
+                  Bukti Post Poster di Story (Anggota 2)
+                </label>
+                <div
+                  className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
+                    isInvalid(["buktiPostA2"])
+                      ? "border-red-500 bg-red-500/10"
+                      : "border-white/20 bg-white/5 hover:bg-white/10"
+                  }`}
+                >
+                  <input
+                    type="file"
+                    id="buktiPostA2"
+                    name="buktiPostA2"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="buktiPostA2"
+                    className="cursor-pointer h-full flex flex-col items-center justify-center"
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
+                        isInvalid(["buktiPostA2"])
+                          ? "bg-red-500/20 text-red-500"
+                          : "bg-brand-sun/10 text-brand-sun"
+                      }`}
+                    >
+                      <FiUploadCloud size={20} />
+                    </div>
+                    <p
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiPostA2"]) ? "text-red-500 font-semibold" : "text-white"}`}
+                    >
+                      {formData.buktiPostA2
+                        ? formData.buktiPostA2.name
+                        : "Klik untuk upload Gambar"}
+                    </p>
+                    <p className="text-[8px] text-white/50">Maks 10MB</p>
                   </label>
                 </div>
               </motion.div>
@@ -835,51 +1031,49 @@ export default function FormGenetic() {
           >
             <motion.div
               variants={itemVariants}
-              className="p-5 rounded-2xl bg-linear-to-br from-pink-50 to-white border border-pink-200 shadow-sm"
+              className="p-5 rounded-2xl bg-white/5 border border-white/10 shadow-sm backdrop-blur-md"
             >
-              <h4 className="text-xs font-bold text-[#e21c70] uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-bold text-brand-sun uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
                 <FiCreditCard /> Rekening Pembayaran
               </h4>
               <div className="space-y-2">
-                <div className="flex justify-between items-center border-b border-pink-50 pb-2">
-                  <span className="text-xs text-[#191b37] font-medium">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-xs text-white/70 font-medium">
                     Metode
                   </span>
-                  <span className="text-sm font-bold text-[#191b37]">Sea Bank</span>
+                  <span className="text-sm font-bold text-white">
+                    Sea Bank
+                  </span>
                 </div>
-                <div className="flex justify-between items-center border-b border-pink-50 pb-2">
-                  <span className="text-xs text-[#191b37] font-medium">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-xs text-white/70 font-medium">
                     Nomor
                   </span>
-                  <span className="text-sm font-bold text-[#191b37]">
+                  <span className="text-sm font-bold text-white">
                     901692349640
                   </span>
                 </div>
-                <div className="flex justify-between items-center border-b border-pink-50 pb-2">
-                  <span className="text-xs text-[#191b37] font-medium">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-xs text-white/70 font-medium">
                     Atas Nama
                   </span>
-                  <span className="text-sm font-bold text-[#191b37]">
+                  <span className="text-sm font-bold text-white">
                     Ferdy
                   </span>
                 </div>
-                <div
-                  className="flex justify-between items-center border-b border-pink-50 pb-2"
-                >
-                  <span className="text-xs text-[#191b37] font-medium">
+                <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <span className="text-xs text-white/70 font-medium">
                     Early Bird
                   </span>
-                  <span className="text-sm font-bold text-[#e21c70]">
+                  <span className="text-sm font-bold text-brand-sun">
                     Rp. 50.000
                   </span>
                 </div>
-                <div
-                  className="flex justify-between items-center"
-                >
-                  <span className="text-xs text-[#191b37] font-medium">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-white/70 font-medium">
                     Normal Price
                   </span>
-                  <span className="text-sm font-bold text-[#191b37]">
+                  <span className="text-sm font-bold text-white">
                     Rp. 60.000
                   </span>
                 </div>
@@ -887,13 +1081,15 @@ export default function FormGenetic() {
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-3 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-3 uppercase tracking-wider">
                 Pendaftaran
               </label>
               <div className="grid grid-cols-2 gap-4">
                 {["Early Bird", "Normal Price"].map((b) => {
                   const isDisabled =
-                    b === "Early Bird" ? !isEarlyBirdActive : !isNormalPriceActive;
+                    b === "Early Bird"
+                      ? !isEarlyBirdActive
+                      : !isNormalPriceActive;
                   return (
                     <button
                       key={b}
@@ -902,10 +1098,10 @@ export default function FormGenetic() {
                       onClick={() => setFormData((p) => ({ ...p, batch: b }))}
                       className={`py-3 rounded-xl border transition-all flex items-center justify-center gap-2 ${
                         formData.batch === b
-                          ? "bg-[#e21c70] text-white border-transparent shadow-lg shadow-pink-200"
+                          ? "bg-brand-sun text-brand-midnight border-transparent shadow-lg shadow-brand-sun/20"
                           : isDisabled
                             ? "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-50"
-                            : "bg-[#e9cfeb]/50 border-pink-400 text-[#191b37] hover:bg-[#e9cfeb]"
+                            : "bg-white/5 border-white/10 text-white hover:bg-white/10"
                       }`}
                     >
                       {formData.batch === b && <FiCheckCircle />}
@@ -917,14 +1113,14 @@ export default function FormGenetic() {
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-semibold text-[#191b37] mb-3 uppercase tracking-wider">
+              <label className="block text-sm font-semibold text-white mb-3 uppercase tracking-wider">
                 Bukti Pembayaran Biaya Pendaftaran
               </label>
               <div
                 className={`border-2 border-dashed rounded-2xl p-6 text-center backdrop-blur-sm transition-all group ${
                   isInvalid(["buktiBayar"])
-                    ? "border-red-500 bg-red-50/30"
-                    : "border-pink-400 bg-[#e9cfeb]/30 hover:bg-[#e9cfeb]/50"
+                    ? "border-red-500 bg-red-500/10"
+                    : "border-white/20 bg-white/5 hover:bg-white/10"
                 }`}
               >
                 <input
@@ -942,34 +1138,34 @@ export default function FormGenetic() {
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
                       isInvalid(["buktiBayar"])
-                        ? "bg-red-100 text-red-500"
-                        : "bg-pink-100 text-[#e21c70]"
+                        ? "bg-red-500/20 text-red-500"
+                        : "bg-brand-sun/10 text-brand-sun"
                     }`}
                   >
                     <FiCreditCard size={24} />
                   </div>
                   <p
-                    className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["buktiBayar"]) ? "text-red-600 font-semibold" : "text-[#191b37]"}`}
+                    className={`text-sm mb-1 truncate w-full px-2 ${isInvalid(["buktiBayar"]) ? "text-red-600 font-semibold" : "text-white"}`}
                   >
                     {formData.buktiBayar
                       ? formData.buktiBayar.name
                       : "Klik untuk upload bukti (Gambar)"}
                   </p>
-                  <p className="text-xs text-[#191b37]/50">Maks 10MB</p>
+                  <p className="text-xs text-white/50">Maks 10MB</p>
                 </label>
               </div>
             </motion.div>
 
             <motion.div variants={itemVariants} className="space-y-3 pt-4">
-              <label className="block text-[10px] font-bold text-[#e21c70] uppercase tracking-[0.2em] text-center">
+              <label className="block text-[10px] font-bold text-brand-sun uppercase tracking-[0.2em] text-center">
                 Verifikasi Keamanan
               </label>
-              <div className="flex justify-center p-4 rounded-2xl bg-[#e9cfeb]/40 backdrop-blur-md border border-pink-200/50 shadow-inner scale-90 sm:scale-100">
+              <div className="flex justify-center p-4 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-inner scale-90 sm:scale-100">
                 <Turnstile
                   siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                   onSuccess={(token) => setTurnstileToken(token)}
                   options={{
-                    theme: "light",
+                    theme: "dark",
                   }}
                 />
               </div>
@@ -983,7 +1179,7 @@ export default function FormGenetic() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 bg-[#e9cfeb] bg-[radial-gradient(#e21c7011_1px,transparent_1px)] bg-size-[20px_20px] overflow-x-hidden">
+    <div className="min-h-screen pt-24 pb-12 px-4 bg-transparent overflow-x-hidden">
       {/* Decorative Circles */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <motion.div
@@ -993,7 +1189,7 @@ export default function FormGenetic() {
             y: [0, 30, 0],
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-24 -left-24 w-96 h-96 bg-pink-200/20 rounded-full blur-3xl"
+          className="absolute -top-24 -left-24 w-96 h-96 bg-brand-sun/10 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -1002,7 +1198,7 @@ export default function FormGenetic() {
             y: [0, 60, 0],
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 -right-24 w-80 h-80 bg-pink-300/10 rounded-full blur-3xl"
+          className="absolute top-1/2 -right-24 w-80 h-80 bg-brand-sky/10 rounded-full blur-3xl"
         />
       </div>
 
@@ -1015,35 +1211,35 @@ export default function FormGenetic() {
         {/* Header Section */}
         <div className="text-center mb-10">
           <div className="flex items-center justify-center w-full mb-6">
-            <div className="h-px bg-linear-to-r from-transparent to-[#e21c70] grow max-w-25"></div>
-            <h2 className="px-4 text-xs sm:text-sm font-bold text-[#e21c70] uppercase tracking-[0.3em]">
+            <div className="h-px bg-linear-to-r from-transparent to-brand-sun grow max-w-25"></div>
+            <h2 className="px-4 text-xs sm:text-sm font-bold text-brand-sun uppercase tracking-[0.3em]">
               Pendaftaran Tim
             </h2>
-            <div className="h-px bg-linear-to-l from-transparent to-[#e21c70] grow max-w-25"></div>
+            <div className="h-px bg-linear-to-l from-transparent to-brand-sun grow max-w-25"></div>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-[#191b37] font-montserrat tracking-tight mb-4">
-            Form Pendaftaran <span className="text-[#e21c70]">Tim</span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white font-montserrat tracking-tight mb-4">
+            Form Pendaftaran <span className="text-brand-sun">Tim</span>
           </h1>
-          <p className="text-[#191b37] text-sm max-w-lg mx-auto leading-relaxed">
+          <p className="text-white/70 text-sm max-w-lg mx-auto leading-relaxed">
             Lengkapi data satu tim secara bertahap.
           </p>
         </div>
 
         {/* Progress Container */}
-        <div className="bg-[#e9cfeb]/80 backdrop-blur-xl rounded-3xl p-6 mb-8 border border-white shadow-2xl shadow-pink-100/50">
+        <div className="bg-brand-midnight/60 backdrop-blur-xl rounded-3xl p-6 mb-8 border border-white/10 shadow-2xl shadow-brand-sun/5">
           <div className="flex justify-between items-center mb-6 px-2">
-            <span className="text-xs font-bold text-[#e21c70] uppercase tracking-widest">
+            <span className="text-xs font-bold text-brand-sun uppercase tracking-widest">
               Progress Step
             </span>
-            <span className="text-sm font-bold text-[#191b37]/50">
+            <span className="text-sm font-bold text-white/50">
               {step}/{totalSteps}
             </span>
           </div>
 
           {/* Progress Bar */}
-          <div className="h-2 bg-pink-50 rounded-full mb-8 relative overflow-hidden">
+          <div className="h-2 bg-white/10 rounded-full mb-8 relative overflow-hidden">
             <motion.div
-              className="absolute left-0 top-0 h-full bg-linear-to-r from-pink-400 to-[#e21c70]"
+              className="absolute left-0 top-0 h-full bg-linear-to-r from-brand-sun to-brand-sand"
               initial={{ width: 0 }}
               animate={{ width: `${(step / totalSteps) * 100}%` }}
               transition={{ duration: 0.5 }}
@@ -1058,23 +1254,21 @@ export default function FormGenetic() {
                   animate={step >= s.id ? { scale: [1, 1.2, 1] } : {}}
                   className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
                     step >= s.id
-                      ? "bg-[#e21c70] text-white ring-4 ring-pink-100 shadow-lg shadow-pink-200"
-                      : "bg-[#e9cfeb]/30 text-[#191b37]/30"
+                      ? "bg-brand-sun text-brand-midnight ring-4 ring-brand-sun/10 shadow-lg shadow-brand-sun/20"
+                      : "bg-white/5 text-white/30"
                   }`}
                 >
                   {s.icon}
                 </motion.div>
                 <span
                   className={`text-[10px] font-bold uppercase hidden sm:block ${
-                    step >= s.id ? "text-[#e21c70]" : "text-[#191b37]/30"
+                    step >= s.id ? "text-brand-sun" : "text-white/30"
                   }`}
                 >
                   {s.label}
                 </span>
               </div>
             ))}
-            {/* Background Line for steps */}
-            <div className="absolute top-5 left-0 w-full h-0.5 bg-[#e9cfeb] z-0"></div>
           </div>
         </div>
 
@@ -1082,7 +1276,7 @@ export default function FormGenetic() {
         <motion.div
           animate={isShaking ? { x: [-10, 10, -10, 10, 0] } : {}}
           transition={{ duration: 0.4 }}
-          className="bg-[#e9cfeb]/80 backdrop-blur-xl rounded-3xl p-8 border border-white shadow-2xl shadow-pink-100/50 min-h-100 flex flex-col relative"
+          className="bg-brand-midnight/60 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl shadow-brand-sun/5 min-h-100 flex flex-col relative"
         >
           <AnimatePresence>
             {showErrors && !validateStep() && (
@@ -1090,19 +1284,19 @@ export default function FormGenetic() {
                 initial={{ opacity: 0, y: -10, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.9 }}
-                className="absolute top-4 right-8 text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full border border-red-100 flex items-center gap-1 z-20"
+                className="absolute top-4 right-8 text-xs font-bold text-red-500 bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20 flex items-center gap-1 z-20"
               >
                 <span>⚠️ LENGKAPI DATA</span>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <h3 className="text-xl font-bold text-[#191b37] mb-8 flex items-center gap-3">
+          <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-3">
             <motion.span
               key={step}
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="w-8 h-8 rounded-lg bg-pink-100 text-[#e21c70] flex items-center justify-center text-sm"
+              className="w-8 h-8 rounded-lg bg-brand-sun/10 text-brand-sun flex items-center justify-center text-sm"
             >
               {step}
             </motion.span>
@@ -1133,7 +1327,7 @@ export default function FormGenetic() {
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
                 step === 1
                   ? "opacity-0 pointer-events-none"
-                  : "bg-[#e9cfeb]/50 text-[#191b37] hover:bg-[#e9cfeb]"
+                  : "bg-white/10 text-white hover:bg-white/20"
               }`}
             >
               <FiChevronLeft /> Kembali
@@ -1148,7 +1342,7 @@ export default function FormGenetic() {
                 className={`flex items-center gap-2 px-8 py-3 rounded-xl font-bold shadow-lg transition-all ${
                   showErrors && !validateStep()
                     ? "bg-red-500 text-white shadow-red-200"
-                    : "bg-[#e21c70] text-white shadow-pink-200 hover:bg-[#c0175e]"
+                    : "bg-brand-sun text-brand-midnight shadow-brand-sun/20 hover:bg-brand-sun/80"
                 }`}
               >
                 Lanjut <FiChevronRight />
@@ -1160,12 +1354,12 @@ export default function FormGenetic() {
                 type="submit"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className={`flex items-center gap-2 px-4 py-4 sm:px-8 sm:py-3 rounded-xl text-white font-bold hover:shadow-xl transition-all ${
+                className={`flex items-center gap-2 px-4 py-4 sm:px-8 sm:py-3 rounded-xl text-brand-midnight font-bold hover:shadow-xl transition-all ${
                   isSubmitting
-                    ? "bg-pink-400 cursor-not-allowed"
+                    ? "bg-brand-sun/50 cursor-not-allowed"
                     : showErrors && !validateStep()
-                      ? "bg-red-600 shadow-red-200"
-                      : "bg-[#e21c70]"
+                      ? "bg-red-600 text-white shadow-red-200"
+                      : "bg-brand-sun"
                 }`}
               >
                 {isSubmitting ? (
@@ -1181,11 +1375,41 @@ export default function FormGenetic() {
             )}
           </div>
         </motion.div>
+
+        {/* Bahan Repost Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-8 bg-brand-midnight/60 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl"
+        >
+          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <FiUploadCloud className="text-brand-sun" /> Bahan Repost Poster
+          </h3>
+          <p className="text-white/70 text-sm mb-6">
+            Silakan unduh poster di bawah ini dan posting di Instagram Story Anda, lalu unggah bukti screenshot-nya pada form di atas.
+          </p>
+          <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5 p-2">
+            <img 
+              src="/poster.jpeg" 
+              alt="Poster Digifest" 
+              className="w-full h-auto rounded-xl max-h-120 object-contain bg-white/5"
+            />
+          </div>
+          <a 
+            href="/poster.jpeg" 
+            download="Poster-Digifest.jpeg"
+            className="mt-6 flex items-center justify-center gap-2 w-full py-4 bg-brand-sun text-brand-midnight font-bold rounded-xl hover:bg-brand-sun/80 transition-all"
+          >
+            <FiDownload /> Download Poster
+          </a>
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="text-center text-[#191b37]/50 text-xs mt-8"
+          className="text-center text-white/40 text-xs mt-8"
         >
           Draft isian tersimpan otomatis saat kamu isi form. Jika halaman
           refresh, data teks akan dipulihkan, namun file yang diunggah harus

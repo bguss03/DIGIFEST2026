@@ -55,8 +55,8 @@ export default function Faq() {
   return (
     <section className="py-24 relative overflow-hidden" id="Faq">
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
-        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-[#e21c70]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-[#191b37]/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-brand-sun/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-brand-midnight/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-4 max-w-4xl">
@@ -67,20 +67,20 @@ export default function Faq() {
             viewport={{ once: true }}
             className="flex items-center w-full max-w-2xl mb-8"
           >
-            <div className="h-0.5 bg-linear-to-r from-transparent to-[#e21c70] grow rounded-full"></div>
-            <h2 className="px-6 text-sm sm:text-lg font-bold text-[#191b37] uppercase tracking-[0.4em] text-center whitespace-nowrap">
+            <div className="h-0.5 bg-linear-to-r from-transparent to-brand-sun grow rounded-full"></div>
+            <h2 className="px-6 text-sm sm:text-lg font-bold text-white uppercase tracking-[0.4em] text-center whitespace-nowrap">
               FAQ
             </h2>
-            <div className="h-0.5 bg-linear-to-l from-transparent to-[#e21c70] grow rounded-full"></div>
+            <div className="h-0.5 bg-linear-to-l from-transparent to-brand-sun grow rounded-full"></div>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl  text-center font-bold text-[#191b37] font-montserrat leading-tight"
+            className="text-3xl sm:text-4xl  text-center font-bold text-white font-montserrat leading-tight"
           >
-            Pertanyaan <span className="text-[#e21c70]">Umum</span>
+            Pertanyaan <span className="text-brand-sun">Umum</span>
           </motion.h1>
         </div>
 
@@ -101,8 +101,8 @@ export default function Faq() {
                 variants={itemVariants}
                 className={`group rounded-2xl border transition-all duration-500 overflow-hidden ${
                   isOpen 
-                    ? "border-[#e21c70]/30 bg-white shadow-2xl shadow-[#e21c70]/10" 
-                    : "border-gray-200 bg-white/40 backdrop-blur-sm hover:border-[#e21c70]/20 hover:bg-white/80"
+                    ? "border-brand-sun/30 bg-brand-midnight/60 shadow-2xl shadow-brand-sun/5" 
+                    : "border-white/10 bg-white/5 backdrop-blur-sm hover:border-brand-sun/20 hover:bg-white/10"
                 }`}
               >
                 <button
@@ -110,15 +110,15 @@ export default function Faq() {
                   onClick={() => lihatJawaban(index)}
                 >
                   <span className={`text-lg sm:text-xl font-bold transition-colors duration-300 ${
-                    isOpen ? "text-[#e21c70]" : "text-[#191b37]"
+                    isOpen ? "text-brand-sun" : "text-white"
                   }`}>
                     {d.pertanyaan}
                   </span>
                   <motion.div
                     animate={{ 
                       rotate: isOpen ? 180 : 0,
-                      backgroundColor: isOpen ? "#e21c70" : "rgba(243, 244, 246, 1)",
-                      color: isOpen ? "#ffffff" : "#191b37"
+                      backgroundColor: isOpen ? "var(--color-brand-sun)" : "rgba(255, 255, 255, 0.05)",
+                      color: isOpen ? "#00205B" : "#ffffff"
                     }}
                     className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-sm"
                   >
@@ -135,8 +135,8 @@ export default function Faq() {
                       transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                     >
                       <div className="px-6 pb-8 pt-2">
-                        <div className="h-px w-full bg-linear-to-r from-[#e21c70]/20 via-[#e21c70]/10 to-transparent mb-6"></div>
-                        <p className="text-gray-600 leading-relaxed text-base sm:text-lg">
+                        <div className="h-px w-full bg-linear-to-r from-brand-sun/20 via-brand-sun/10 to-transparent mb-6"></div>
+                        <p className="text-white/70 leading-relaxed text-base sm:text-lg font-montserrat">
                           {d.jawaban}
                         </p>
                       </div>

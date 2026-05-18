@@ -7,7 +7,7 @@ export default function NotFound() {
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar />
-            <main className="grow flex flex-col items-center justify-center bg-[#e9cfeb] bg-[radial-gradient(#e21c7022_1px,transparent_1px)] bg-size-[20px_20px] px-6 text-center font-montserrat pt-16">
+            <main className="grow flex flex-col items-center justify-center bg-transparent bg-[radial-gradient(#F2A90022_1px,transparent_1px)] bg-size-[20px_20px] px-6 text-center font-montserrat pt-16">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -19,7 +19,7 @@ export default function NotFound() {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                     >
-                        <h1 className="text-6xl sm:text-9xl font-black italic mb-2 tracking-tighter text-[#191b37] drop-shadow-[0_0_15px_rgba(226,28,112,0.3)]">
+                        <h1 className="text-6xl sm:text-9xl font-black italic mb-2 tracking-tighter text-white drop-shadow-[0_0_15px_rgba(242,169,0,0.3)]">
                             404
                         </h1>
                     </motion.div>
@@ -28,7 +28,7 @@ export default function NotFound() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
-                        className="text-2xl sm:text-4xl font-bold italic mb-6 text-[#e21c70]"
+                        className="text-2xl sm:text-4xl font-bold italic mb-6 text-brand-sun"
                     >
                         Halaman Tidak Ditemukan
                     </motion.h2>
@@ -37,7 +37,7 @@ export default function NotFound() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="text-sm sm:text-base max-w-md mb-10 text-[#191b37] opacity-80 leading-relaxed font-medium"
+                        className="text-sm sm:text-base max-w-md mb-10 text-white opacity-80 leading-relaxed font-medium"
                     >
                         Maaf, halaman yang Anda cari tidak tersedia atau telah dipindahkan ke dimensi lain.
                     </motion.p>
@@ -51,7 +51,7 @@ export default function NotFound() {
                     >
                         <Link
                             to="/"
-                            className="bg-[#191b37] text-[#e9cfeb] px-10 py-4 rounded-full font-bold text-sm sm:text-base shadow-[0_10px_20px_rgba(25,27,55,0.2)] hover:shadow-[0_15px_30px_rgba(25,27,55,0.3)] transition-all duration-300"
+                            className="bg-brand-sun text-brand-midnight px-10 py-4 rounded-full font-bold text-sm sm:text-base shadow-[0_10px_20px_rgba(242,169,0,0.2)] hover:shadow-[0_15px_30px_rgba(242,169,0,0.3)] transition-all duration-300"
                         >
                             KEMBALI KE BERANDA
                         </Link>
@@ -70,7 +70,7 @@ export default function NotFound() {
                             repeat: Infinity,
                             ease: "easeInOut"
                         }}
-                        className="absolute top-[20%] left-[10%] w-12 h-12 border-4 border-[#e21c70]/20 rounded-lg hidden md:block"
+                        className="absolute top-[20%] left-[10%] w-12 h-12 border-4 border-brand-sun/20 rounded-lg hidden md:block"
                     />
                     <motion.div 
                         animate={{ 
@@ -82,7 +82,7 @@ export default function NotFound() {
                             repeat: Infinity,
                             ease: "easeInOut"
                         }}
-                        className="absolute bottom-[20%] right-[15%] w-16 h-16 border-4 border-[#191b37]/10 rounded-full hidden md:block"
+                        className="absolute bottom-[20%] right-[15%] w-16 h-16 border-4 border-white/10 rounded-full hidden md:block"
                     />
                 </div>
             </main>
