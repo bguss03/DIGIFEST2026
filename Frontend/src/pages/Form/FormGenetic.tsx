@@ -83,7 +83,7 @@ export default function FormGenetic() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
-  const earlyBirdDeadline = new Date("2026-05-15T23:59:59");
+  const earlyBirdDeadline = new Date("2026-06-08T23:59:59");
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
