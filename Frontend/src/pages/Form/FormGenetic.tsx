@@ -197,15 +197,17 @@ export default function FormGenetic() {
           formData.buktiPostKetua !== null
         );
       case 3:
+        // Anggota 1 Opsional
+        if (formData.anggota1.trim() === "") return true;
         return (
-          formData.anggota1.trim() !== "" &&
           formData.suratAnggota1 !== null &&
           formData.buktiFollowAnggota1 !== null &&
           formData.buktiPostA1 !== null
         );
       case 4:
+        // Anggota 2 Opsional
+        if (formData.anggota2.trim() === "") return true;
         return (
-          formData.anggota2.trim() !== "" &&
           formData.suratAnggota2 !== null &&
           formData.buktiFollowAnggota2 !== null &&
           formData.buktiPostA2 !== null
@@ -237,8 +239,17 @@ export default function FormGenetic() {
     setShowErrors(false);
   };
 
-  const isInvalid = (fields: (keyof FormData)[]) => {
+  const isInvalid = (fields: (keyof FormData)[], isOptional = false) => {
     if (!showErrors) return false;
+    
+    // Jika optional dan field pertama (nama anggota) kosong, anggap valid semua
+    if (isOptional && fields.length > 0) {
+      const firstField = formData[fields[0]];
+      if (typeof firstField === "string" && firstField.trim() === "") {
+        return false;
+      }
+    }
+
     return fields.some((field) => {
       const val = formData[field];
       if (val === null) return true;
@@ -283,7 +294,8 @@ export default function FormGenetic() {
     { id: 5, label: "Pembayaran", icon: <FiCreditCard /> },
   ];
 
-  const uploadFile = async (file: File, folder: string) => {
+  const uploadFile = async (file: File | null, folder: string) => {
+    if (!file) return null;
     const fileExt = file.name.split(".").pop();
     const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;
@@ -322,7 +334,7 @@ export default function FormGenetic() {
     setIsSubmitting(true);
 
     try {
-      // 1. Upload semua file secara paralel
+      // 1. Upload semua file secara paralel (termasuk yang null)
       const [
         urlSuratKetua,
         urlFollowKetua,
@@ -335,16 +347,16 @@ export default function FormGenetic() {
         urlPostA2,
         urlBuktiBayar,
       ] = await Promise.all([
-        uploadFile(formData.suratKetua!, "surat_ketua"),
-        uploadFile(formData.buktiFollowKetua!, "follow_ketua"),
-        uploadFile(formData.buktiPostKetua!, "post_ketua"),
-        uploadFile(formData.suratAnggota1!, "surat_a1"),
-        uploadFile(formData.buktiFollowAnggota1!, "follow_a1"),
-        uploadFile(formData.buktiPostA1!, "post_a1"),
-        uploadFile(formData.suratAnggota2!, "surat_a2"),
-        uploadFile(formData.buktiFollowAnggota2!, "follow_a2"),
-        uploadFile(formData.buktiPostA2!, "post_a2"),
-        uploadFile(formData.buktiBayar!, "bukti_bayar"),
+        uploadFile(formData.suratKetua, "surat_ketua"),
+        uploadFile(formData.buktiFollowKetua, "follow_ketua"),
+        uploadFile(formData.buktiPostKetua, "post_ketua"),
+        uploadFile(formData.suratAnggota1, "surat_a1"),
+        uploadFile(formData.buktiFollowAnggota1, "follow_a1"),
+        uploadFile(formData.buktiPostA1, "post_a1"),
+        uploadFile(formData.suratAnggota2, "surat_a2"),
+        uploadFile(formData.buktiFollowAnggota2, "follow_a2"),
+        uploadFile(formData.buktiPostA2, "post_a2"),
+        uploadFile(formData.buktiBayar, "bukti_bayar"),
       ]);
 
       // 2. Mapping data untuk database payload
@@ -358,11 +370,11 @@ export default function FormGenetic() {
         surat_ketua_url: urlSuratKetua,
         bukti_follow_ketua_url: urlFollowKetua,
         bukti_post_ketua_url: urlPostKetua,
-        anggota1_nama: formData.anggota1,
+        anggota1_nama: formData.anggota1 || null,
         anggota1_surat_url: urlSuratA1,
         anggota1_follow_url: urlFollowA1,
         anggota1_post_url: urlPostA1,
-        anggota2_nama: formData.anggota2,
+        anggota2_nama: formData.anggota2 || null,
         anggota2_surat_url: urlSuratA2,
         anggota2_follow_url: urlFollowA2,
         anggota2_post_url: urlPostA2,
@@ -713,17 +725,16 @@ export default function FormGenetic() {
           >
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                Nama Anggota Tim - 1
+                Nama Anggota Tim - 1 (Opsional)
               </label>
               <input
                 type="text"
                 name="anggota1"
-                required
                 value={formData.anggota1}
                 onChange={handleChange}
-                placeholder="Nama lengkap anggota 1"
+                placeholder="Nama lengkap anggota 1 (Kosongkan jika individu)"
                 className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 backdrop-blur-sm text-white ${
-                  isInvalid(["anggota1"])
+                  isInvalid(["anggota1"], true)
                     ? "border-red-500 ring-2 ring-red-500/20"
                     : "border-white/10"
                 }`}
@@ -736,7 +747,7 @@ export default function FormGenetic() {
                 </label>
                 <div
                   className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
-                    isInvalid(["suratAnggota1"])
+                    isInvalid(["suratAnggota1"], true)
                       ? "border-red-500 bg-red-500/10"
                       : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
@@ -755,7 +766,7 @@ export default function FormGenetic() {
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                        isInvalid(["suratAnggota1"])
+                        isInvalid(["suratAnggota1"], true)
                           ? "bg-red-500/20 text-red-500"
                           : "bg-brand-sun/10 text-brand-sun"
                       }`}
@@ -763,7 +774,7 @@ export default function FormGenetic() {
                       <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["suratAnggota1"]) ? "text-red-500 font-semibold" : "text-white"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["suratAnggota1"], true) ? "text-red-500 font-semibold" : "text-white"}`}
                     >
                       {formData.suratAnggota1
                         ? formData.suratAnggota1.name
@@ -779,7 +790,7 @@ export default function FormGenetic() {
                 </label>
                 <div
                   className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
-                    isInvalid(["buktiFollowAnggota1"])
+                    isInvalid(["buktiFollowAnggota1"], true)
                       ? "border-red-500 bg-red-500/10"
                       : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
@@ -798,7 +809,7 @@ export default function FormGenetic() {
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                        isInvalid(["buktiFollowAnggota1"])
+                        isInvalid(["buktiFollowAnggota1"], true)
                           ? "bg-red-500/20 text-red-500"
                           : "bg-brand-sun/10 text-brand-sun"
                       }`}
@@ -806,7 +817,7 @@ export default function FormGenetic() {
                       <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiFollowAnggota1"]) ? "text-red-600 font-semibold" : "text-white"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiFollowAnggota1"], true) ? "text-red-600 font-semibold" : "text-white"}`}
                     >
                       {formData.buktiFollowAnggota1
                         ? formData.buktiFollowAnggota1.name
@@ -822,7 +833,7 @@ export default function FormGenetic() {
                 </label>
                 <div
                   className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
-                    isInvalid(["buktiPostA1"])
+                    isInvalid(["buktiPostA1"], true)
                       ? "border-red-500 bg-red-500/10"
                       : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
@@ -841,7 +852,7 @@ export default function FormGenetic() {
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                        isInvalid(["buktiPostA1"])
+                        isInvalid(["buktiPostA1"], true)
                           ? "bg-red-500/20 text-red-500"
                           : "bg-brand-sun/10 text-brand-sun"
                       }`}
@@ -849,7 +860,7 @@ export default function FormGenetic() {
                       <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiPostA1"]) ? "text-red-500 font-semibold" : "text-white"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiPostA1"], true) ? "text-red-500 font-semibold" : "text-white"}`}
                     >
                       {formData.buktiPostA1
                         ? formData.buktiPostA1.name
@@ -872,17 +883,16 @@ export default function FormGenetic() {
           >
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                Nama Anggota Tim - 2
+                Nama Anggota Tim - 2 (Opsional)
               </label>
               <input
                 type="text"
                 name="anggota2"
-                required
                 value={formData.anggota2}
                 onChange={handleChange}
-                placeholder="Nama lengkap anggota 2"
+                placeholder="Nama lengkap anggota 2 (Kosongkan jika individu)"
                 className={`w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-brand-sun focus:border-transparent outline-none transition-all bg-white/5 backdrop-blur-sm text-white ${
-                  isInvalid(["anggota2"])
+                  isInvalid(["anggota2"], true)
                     ? "border-red-500 ring-2 ring-red-500/20"
                     : "border-white/10"
                 }`}
@@ -895,7 +905,7 @@ export default function FormGenetic() {
                 </label>
                 <div
                   className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
-                    isInvalid(["suratAnggota2"])
+                    isInvalid(["suratAnggota2"], true)
                       ? "border-red-500 bg-red-500/10"
                       : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
@@ -914,7 +924,7 @@ export default function FormGenetic() {
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                        isInvalid(["suratAnggota2"])
+                        isInvalid(["suratAnggota2"], true)
                           ? "bg-red-500/20 text-red-500"
                           : "bg-brand-sun/10 text-brand-sun"
                       }`}
@@ -922,7 +932,7 @@ export default function FormGenetic() {
                       <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["suratAnggota2"]) ? "text-red-500 font-semibold" : "text-white"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["suratAnggota2"], true) ? "text-red-500 font-semibold" : "text-white"}`}
                     >
                       {formData.suratAnggota2
                         ? formData.suratAnggota2.name
@@ -938,7 +948,7 @@ export default function FormGenetic() {
                 </label>
                 <div
                   className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
-                    isInvalid(["buktiFollowAnggota2"])
+                    isInvalid(["buktiFollowAnggota2"], true)
                       ? "border-red-500 bg-red-500/10"
                       : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
@@ -957,7 +967,7 @@ export default function FormGenetic() {
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                        isInvalid(["buktiFollowAnggota2"])
+                        isInvalid(["buktiFollowAnggota2"], true)
                           ? "bg-red-500/20 text-red-500"
                           : "bg-brand-sun/10 text-brand-sun"
                       }`}
@@ -965,7 +975,7 @@ export default function FormGenetic() {
                       <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiFollowAnggota2"]) ? "text-red-600 font-semibold" : "text-white"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiFollowAnggota2"], true) ? "text-red-600 font-semibold" : "text-white"}`}
                     >
                       {formData.buktiFollowAnggota2
                         ? formData.buktiFollowAnggota2.name
@@ -981,7 +991,7 @@ export default function FormGenetic() {
                 </label>
                 <div
                   className={`grow border-2 border-dashed rounded-2xl p-4 text-center backdrop-blur-sm transition-all group ${
-                    isInvalid(["buktiPostA2"])
+                    isInvalid(["buktiPostA2"], true)
                       ? "border-red-500 bg-red-500/10"
                       : "border-white/20 bg-white/5 hover:bg-white/10"
                   }`}
@@ -1000,7 +1010,7 @@ export default function FormGenetic() {
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${
-                        isInvalid(["buktiPostA2"])
+                        isInvalid(["buktiPostA2"], true)
                           ? "bg-red-500/20 text-red-500"
                           : "bg-brand-sun/10 text-brand-sun"
                       }`}
@@ -1008,7 +1018,7 @@ export default function FormGenetic() {
                       <FiUploadCloud size={20} />
                     </div>
                     <p
-                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiPostA2"]) ? "text-red-500 font-semibold" : "text-white"}`}
+                      className={`text-[10px] mb-1 truncate w-full px-1 ${isInvalid(["buktiPostA2"], true) ? "text-red-500 font-semibold" : "text-white"}`}
                     >
                       {formData.buktiPostA2
                         ? formData.buktiPostA2.name
