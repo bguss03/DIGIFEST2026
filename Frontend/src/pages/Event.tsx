@@ -29,12 +29,18 @@ interface TimelineStep {
   date: string;
 }
 
+// Tambahkan interface baru untuk Guidebook
+interface Guidebook {
+  label: string;
+  link: string;
+}
+
 interface EventData {
   title: string;
   subtitle?: string;
   description: string;
   link: string;
-  guidebookLink?: string;
+  guidebooks?: Guidebook[]; // Mengubah guidebookLink menjadi array guidebooks
   competitions?: Competition[];
   summary?: SummaryCard[];
   timeline?: TimelineStep[];
@@ -51,9 +57,13 @@ const eventDetails: Record<string, EventData> = {
       "GENETIC merupakan kompetisi di bidang teknologi informasi yang ditujukan bagi siswa SMA/SMK sederajat untuk mengeksplorasi potensi digital mereka dan menghadirkan solusi kreatif.",
     link: "/FormGenetic",
     linkSubmit: "/SubmitGenetic",
-    guidebookLink: "#",
     locationInfo:
       "Lomba terdiri dari Babak Penyisihan (Online) dan Babak Final (Offline) di Universitas Semarang.",
+    // Masukkan 2 Guidebook di sini
+    guidebooks: [
+      { label: "Guidebook UI/UX", link: "/GUIDEBOOK_LOMBA_UDC.pdf" },
+      { label: "Guidebook SIIC", link: "/GUIDEBOOK_lOMBA_SIIC.pdf" },
+    ],
     competitions: [
       {
         name: "UI/UX Design Competition",
@@ -106,7 +116,10 @@ const eventDetails: Record<string, EventData> = {
     linkSubmit: "/SubmitDinamic",
     locationInfo:
       "Lomba terdiri dari Babak Penyisihan (Online) dan Babak Final (Offline) di Universitas Semarang.",
-    guidebookLink: "#",
+    // Sesuaikan CDC agar memakai format array guidebooks juga
+    guidebooks: [
+      { label: "Guidebook", link: "/GUIDEBOOK_LOMBA_CDC.pdf" },
+    ],
     summary: [
       {
         label: "Kategori Peserta",
@@ -142,7 +155,6 @@ const eventDetails: Record<string, EventData> = {
     description:
       "IT Competition merupakan pameran karya and inovasi mahasiswa Universitas Semarang sebagai bentuk implementasi pembelajaran di bidang teknologi.",
     link: "/FormItcomp",
-    guidebookLink: "#",
     hideSubmission: true,
     summary: [
       {
@@ -226,17 +238,27 @@ export default function Event() {
                   <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </button>
 
-                {event.guidebookLink && (
-                  <button className="px-10 py-4 bg-white/10 text-white border border-white/10 rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center gap-2 cursor-pointer">
-                    Guidebook <FiDownload />
-                  </button>
-                )}
+                {event.guidebooks &&
+                  event.guidebooks.map((gb, idx) => (
+                    <a
+                      key={idx}
+                      href={gb.link}
+                      target="_blank"
+                      
+                      rel="noopener noreferrer"
+                      className="px-8 py-4 bg-white/10 text-white border border-white/10 rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center gap-2 cursor-pointer"
+                    >
+                      {gb.label} <FiDownload />
+                    </a>
+                  ))}
               </div>
 
-              {/* Baris Bawah: Pengumpulan Karya (Otomatis di tengah karena parent items-center) */}
-             {!event.hideSubmission && (
+              {/* Baris Bawah: Pengumpulan Karya */}
+              {!event.hideSubmission && (
                 <button
-                  onClick={() => event.link !== "#" && event.linkSubmit && navigate(event.linkSubmit)}
+                  onClick={() =>
+                    event.link !== "#" && event.linkSubmit && navigate(event.linkSubmit)
+                  }
                   className="px-10 py-4 bg-brand-sun text-brand-midnight rounded-2xl font-bold shadow-xl shadow-brand-sun/20 hover:bg-brand-sun/80 hover:scale-105 transition-all flex items-center gap-2 group cursor-pointer"
                 >
                   Pengumpulan Karya{" "}
@@ -300,7 +322,7 @@ export default function Event() {
           </div>
         )}
 
-        {/* Summary Section - Based on Reference Image */}
+        {/* Summary Section */}
         {event.summary && (
           <div className="mt-24">
             <motion.div
