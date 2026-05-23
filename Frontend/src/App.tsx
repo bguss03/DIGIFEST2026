@@ -64,8 +64,8 @@ export default function App() {
                 <ScrollReveal>
                   <Kategori />
                 </ScrollReveal>
-                <ScrollReveal>
-                  <Timeline />
+                  <ScrollReveal>
+                <Timeline />
                 </ScrollReveal>
                 <ScrollReveal>
                   <Sponsor />

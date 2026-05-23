@@ -27,7 +27,7 @@ const MediaPartners = [
 
 export default function Sponsor() {
   return (
-    <div id="Sponsor" className="py-20 bg-transparent bg-[radial-gradient(#F2A90022_1px,transparent_1px)] bg-size-[20px_20px] overflow-hidden">
+    <div id="Sponsor" className="py-20 bg-transparent overflow-hidden">
         <div className="flex flex-col items-center mb-10">
           <div className="flex items-center w-full max-w-2xl mb-6">
             <div className="h-0.5 bg-linear-to-r from-transparent to-brand-sun grow rounded-full"></div>

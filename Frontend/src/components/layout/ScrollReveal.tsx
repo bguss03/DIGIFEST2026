@@ -8,7 +8,7 @@ interface ScrollRevealProps {
 
 export const ScrollReveal = ({ children, width = "100%" }: ScrollRevealProps) => {
   return (
-    <div style={{ position: "relative", width, overflow: "hidden" }}>
+    <div style={{ position: "relative", width }}>
       <motion.div
         initial={{ opacity: 0, y: 75 }}
         whileInView={{ opacity: 1, y: 0 }}

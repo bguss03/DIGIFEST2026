@@ -83,12 +83,10 @@ export default function Timeline() {
 
   return (
     <div
-      className="min-h-screen bg-transparent bg-[radial-gradient(#F2A90022_1px,transparent_1px)] bg-size-[20px_20px] flex flex-col justify-center items-center relative overflow-hidden font-montserrat"
+      className="min-h-screen bg-transparent flex flex-col justify-center items-center relative overflow-hidden font-montserrat"
       id="Timeline"
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-brand-sun opacity-[0.05] rounded-full -mr-32 -mt-32 blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-sun opacity-[0.05] rounded-full -ml-48 -mb-48 blur-3xl"></div>
+      
 
       <div className="w-full max-w-7xl mx-auto px-6 relative z-10">
         {/* Header Section */}

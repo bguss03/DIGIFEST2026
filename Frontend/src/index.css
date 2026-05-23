@@ -19,12 +19,6 @@
 
 body {
   background-color: var(--color-brand-ocean);
-  /* Mesh gradient inspired by the brand identity image */
-  background-image: 
-    radial-gradient(at 0% 0%, var(--color-brand-ocean) 0%, transparent 70%),
-    radial-gradient(at 100% 0%, var(--color-brand-sun) 0%, transparent 70%),
-    radial-gradient(at 100% 100%, var(--color-brand-sky) 0%, transparent 70%),
-    radial-gradient(at 0% 100%, var(--color-brand-midnight) 0%, transparent 70%);
   background-attachment: fixed;
   background-size: cover;
   margin: 0;
