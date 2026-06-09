@@ -5,7 +5,7 @@ const timelineData = [
   {
     id: 1,
     title: "Pendaftaran",
-    date: "Sekarang – 08 Juni 2026",
+    date: "Sekarang – 30 Juni 2026",
     location: "Online",
     description: "Pendaftaran peserta lomba telah dibuka.",
     // Menambahkan field baru untuk detail harga agar mudah dikelola
@@ -22,21 +22,21 @@ const timelineData = [
   {
     id: 2,
     title: "Technical Meeting Peserta",
-    date: "10 Juni 2026",
+    date: "17 Juni 2026",
     location: "Online",
     description: "Penjelasan teknis pelaksanaan lomba.",
   },
   {
     id: 3,
     title: "Pengumpulan Karya GENETIC dan Creative Dance Competition",
-    date: "25 Juni 2026",
+    date: "1 Juli 2026",
     location: "Online",
     description: "Batas akhir pengumpulan karya lomba.",
   },
   {
     id: 4,
     title: "Seleksi & Penilaian Karya GENETIC dan Creative Dance Competition",
-    date: "26 Juni – 2 Juli 2026",
+    date: "1 Juli – 3 Juli 2026",
     location: "Online",
     description: "Proses seleksi dan penilaian oleh juri.",
   },

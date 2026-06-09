@@ -36,7 +36,7 @@ const guidelines = [
   },
   {
     id: "siic",
-    title: "System Innovation Idea Creative",
+    title: "System Innovation Idea Competition",
     icon: <LuLightbulb className="w-8 h-8 text-brand-sun" />,
     description:
       "Pedoman penyusunan proposal ide inovasi sistem informasi dan kriteria seleksi.",

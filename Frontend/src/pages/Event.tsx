@@ -29,7 +29,6 @@ interface TimelineStep {
   date: string;
 }
 
-// Tambahkan interface baru untuk Guidebook
 interface Guidebook {
   label: string;
   link: string;
@@ -40,7 +39,7 @@ interface EventData {
   subtitle?: string;
   description: string;
   link: string;
-  guidebooks?: Guidebook[]; // Mengubah guidebookLink menjadi array guidebooks
+  guidebooks?: Guidebook[]; 
   competitions?: Competition[];
   summary?: SummaryCard[];
   timeline?: TimelineStep[];
@@ -59,7 +58,6 @@ const eventDetails: Record<string, EventData> = {
     linkSubmit: "/SubmitGenetic",
     locationInfo:
       "Lomba terdiri dari Babak Penyisihan (Online) dan Babak Final (Offline) di Universitas Semarang.",
-    // Masukkan 2 Guidebook di sini
     guidebooks: [
       { label: "Guidebook UI/UX", link: "/GUIDEBOOK_LOMBA_UDC.pdf" },
       { label: "Guidebook SIIC", link: "/GUIDEBOOK_lOMBA_SIIC.pdf" },
@@ -72,7 +70,7 @@ const eventDetails: Record<string, EventData> = {
         subTheme: "Solusi Digital Untuk Tantangan atau Masalah Sosial",
       },
       {
-        name: "System Innovation System Idea Competition",
+        name: "System Innovation Idea Competition",
         description:
           "Kompetisi ini menguji kemampuan peserta dalam merancang solusi inovatif berbasis teknologi untuk menjawab permasalahan sosial secara kreatif dan aplikatif.",
         subTheme: "Smart Society & Digital Solutions",
@@ -99,10 +97,10 @@ const eventDetails: Record<string, EventData> = {
       },
     ],
     timeline: [
-      { title: "Pendaftaran", date: "Sekarang – 08 Juni 2026" },
-      { title: "Technical Meeting Peserta", date: "10 Juni 2026" },
-      { title: "Pengumpulan Karya", date: "25 Juni 2026" },
-      { title: "Seleksi & Penilaian Karya", date: "26 Juni – 2 Juli 2026" },
+      { title: "Pendaftaran", date: "Sekarang – 30 Juni 2026" },
+      { title: "Technical Meeting Peserta", date: "17 Juni 2026" },
+      { title: "Pengumpulan Karya", date: "1 Juli 2026" },
+      { title: "Seleksi & Penilaian Karya", date: "1 Juli – 3 Juli 2026" },
       { title: "Pengumuman Finalis", date: "3 Juli 2026" },
       { title: "Technical Meeting Finalis", date: "4 Juli 2026" },
       { title: "Final Lomba (Offline)", date: "9 Juli 2026" },
@@ -116,7 +114,6 @@ const eventDetails: Record<string, EventData> = {
     linkSubmit: "/SubmitDinamic",
     locationInfo:
       "Lomba terdiri dari Babak Penyisihan (Online) dan Babak Final (Offline) di Universitas Semarang.",
-    // Sesuaikan CDC agar memakai format array guidebooks juga
     guidebooks: [
       { label: "Guidebook", link: "/GUIDEBOOK_LOMBA_CDC.pdf" },
     ],
@@ -141,10 +138,10 @@ const eventDetails: Record<string, EventData> = {
       },
     ],
     timeline: [
-      { title: "Pendaftaran", date: "Sekarang – 08 Juni 2026" },
-      { title: "Technical Meeting Peserta", date: "10 Juni 2026" },
-      { title: "Pengumpulan Karya", date: "25 Juni 2026" },
-      { title: "Seleksi & Penilaian Karya", date: "26 Juni – 2 Juli 2026" },
+      { title: "Pendaftaran", date: "Sekarang – 30 Juni 2026" },
+      { title: "Technical Meeting Peserta", date: "17 Juni 2026" },
+      { title: "Pengumpulan Karya", date: "1 Juli 2026" },
+      { title: "Seleksi & Penilaian Karya", date: "1 Juli – 3 Juli 2026" },
       { title: "Pengumuman Finalis", date: "3 Juli 2026" },
       { title: "Technical Meeting Finalis", date: "4 Juli 2026" },
       { title: "Final Lomba (Offline)", date: "9 Juli 2026" },
@@ -178,8 +175,8 @@ const eventDetails: Record<string, EventData> = {
       },
     ],
     timeline: [
-      { title: "Pendaftaran", date: "Sekarang – 08 Juni 2026" },
-      { title: "Technical Meeting", date: "10 Juni 2026" },
+      { title: "Pendaftaran", date: "Sekarang – 30 Juni 2026" },
+      { title: "Technical Meeting", date: "17 Juni 2026" },
       { title: "IT Competition (Pameran)", date: "9 Juli 2026" },
       { title: "Awarding Celebration (Penutupan)", date: "9 Juli 2026" },
     ],

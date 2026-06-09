@@ -67,7 +67,7 @@ const itemVariants = {
 
 const GROUP_LINKS: Record<string, string> = {
   "UI UX": "https://chat.whatsapp.com/CCj4QfDDQRiEpMOOlmRiPt",
-  "Innovation System Challenge":
+  "System Innovation Idea Competition":
     "https://chat.whatsapp.com/EImhllNLHtwBWasLwrE0Zm",
 };
 
@@ -83,7 +83,7 @@ export default function FormGenetic() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
-  const earlyBirdDeadline = new Date("2026-06-08T23:59:59");
+  const earlyBirdDeadline = new Date("2026-06-30T23:59:59");
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -242,7 +242,6 @@ export default function FormGenetic() {
   const isInvalid = (fields: (keyof FormData)[], isOptional = false) => {
     if (!showErrors) return false;
     
-    // Jika optional dan field pertama (nama anggota) kosong, anggap valid semua
     if (isOptional && fields.length > 0) {
       const firstField = formData[fields[0]];
       if (typeof firstField === "string" && firstField.trim() === "") {
@@ -476,7 +475,7 @@ export default function FormGenetic() {
                 Kategori Lomba
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {["UI UX", "Innovation System Challenge"].map((cat) => (
+                {["UI UX", "System Innovation Idea Competition"].map((cat) => (
                   <button
                     key={cat}
                     type="button"

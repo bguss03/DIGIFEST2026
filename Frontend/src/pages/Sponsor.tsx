@@ -15,7 +15,7 @@ const Sponsors = [
 ];
 
 const MediaPartners = [
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
+  { src:"forumosis.png", title: "forumosis", href: "https://www.instagram.com/forumosis.purbalingga?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
   { src:"digifest.svg", title: "React", href: "https://react.dev" },
   { src:"digifest.svg", title: "React", href: "https://react.dev" },
   { src:"digifest.svg", title: "React", href: "https://react.dev" },
