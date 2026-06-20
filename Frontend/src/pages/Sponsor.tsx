@@ -16,10 +16,10 @@ const Sponsors = [
 
 const MediaPartners = [
   { src:"forumosis.png", title: "forumosis", href: "https://www.instagram.com/forumosis.purbalingga?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-  { src:"BEM-FTP.jpeg", title: "BEM FTP", href: "https://www.instagram.com/bem_ftpusm?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-  { src:"forumosispekalongan.jpg", title: "forumosispekalongan", href: "https://www.instagram.com/fosis_pekalongan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+  { src:"BEM-FTP.png", title: "BEM FTP", href: "https://www.instagram.com/bem_ftpusm?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+  { src:"forumosispekalongan.png", title: "forumosispekalongan", href: "https://www.instagram.com/fosis_pekalongan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
   { src:"Himalika.png", title: "Himalika", href: "https://www.instagram.com/himalikausm?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-  { src:"ILPOL.jpeg", title: "ILPOL", href: "https://www.instagram.com/hmjpolitik_uinws?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+  { src:"ILPOL.png", title: "ILPOL", href: "https://www.instagram.com/hmjpolitik_uinws?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
   { src:"Infovolunteers.jpg", title: "Infovolunteers", href: "https://www.instagram.com/infovolunteers?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
   { src:"ingfonyadesain.png", title: "ingfonyadesain", href: "https://www.instagram.com/ingfonyadesain?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
   { src:"PI.jpg", title: "pusatinfolomba", href: "https://www.instagram.com/pusatinfolomba?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
