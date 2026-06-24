@@ -153,6 +153,9 @@ const eventDetails: Record<string, EventData> = {
       "IT Competition merupakan pameran karya and inovasi mahasiswa Universitas Semarang sebagai bentuk implementasi pembelajaran di bidang teknologi.",
     link: "/FormItcomp",
     hideSubmission: true,
+    guidebooks: [
+      { label: "Guidebook", link: "/GUIDEBOOK_IC.pdf" },
+    ],
     summary: [
       {
         label: "Kategori Peserta",

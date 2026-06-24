@@ -3,6 +3,7 @@ import {
   LuDownload,
   LuLayoutTemplate,
   LuLightbulb,
+  LuMonitor,
   LuMusic,
 } from "react-icons/lu";
 
@@ -62,20 +63,20 @@ const guidelines = [
     ],
     link: "GUIDEBOOK_LOMBA_CDC.pdf",
   },
-  // {
-  //   id: "ic",
-  //   title: "IT Competition",
-  //   icon: <LuMonitor className="w-8 h-8 text-brand-sun" />,
-  //   description:
-  //     "Panduan pameran karya teknologi dan kriteria penilaian inovasi mahasiswa.",
-  //   details: [
-  //     "Karya berupa aplikasi, hardware, atau solusi IT lainnya.",
-  //     "Wajib menyertakan dokumentasi teknis.",
-  //     "Presentasi dilakukan di booth pameran yang disediakan.",
-  //     "Penilaian: Inovasi, Kesiapan Produk, dan Presentasi.",
-  //   ],
-  //   link: "#",
-  // },
+  {
+    id: "ic",
+    title: "IT Competition",
+    icon: <LuMonitor className="w-8 h-8 text-brand-sun" />,
+    description:
+      "Panduan pameran karya teknologi dan kriteria penilaian inovasi mahasiswa.",
+    details: [
+      "Karya berupa aplikasi, hardware, atau solusi IT lainnya.",
+      "Wajib menyertakan dokumentasi teknis.",
+      "Presentasi dilakukan di booth pameran yang disediakan.",
+      "Penilaian: Inovasi, Kesiapan Produk, dan Presentasi.",
+    ],
+    link: "GUIDEBOOK_IC.pdf",
+  },
 ];
 
 export default function Junlak() {
