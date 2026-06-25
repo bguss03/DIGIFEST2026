@@ -3,15 +3,8 @@ import LogoLoop from '@/components/ui/LogoLoop';
 // import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiFramer, SiVite, SiNodedotjs, SiMongodb } from 'react-icons/si';
 
 const Sponsors = [
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  { src:"digifest.svg", title: "React", href: "https://react.dev" },
-  
+  { src:"saha.png", title: "saha", href: "https://www.instagram.com/saha_productionsmg?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+  { src:"saynana.png", title: "saynana", href: "https://www.instagram.com/saynanaofficial?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
 ];
 
 const MediaPartners = [
