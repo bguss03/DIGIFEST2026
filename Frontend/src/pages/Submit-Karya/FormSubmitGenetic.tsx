@@ -6,6 +6,7 @@ import {
   FiUser,
   FiLink,
   FiYoutube,
+  FiInstagram,
   FiFileText,
   FiCheckCircle,
   FiLoader,
@@ -22,7 +23,7 @@ type FormData = {
   noKetua: string;
   judulInovasi: string;
   linkProposal: string;
-  linkYoutube: string;
+  linkMedia: string;
   kategori: string;
 };
 
@@ -60,7 +61,7 @@ export default function FormSubmitGenetic() {
     noKetua: "",
     judulInovasi: "",
     linkProposal: "",
-    linkYoutube: "",
+    linkMedia: "",
     kategori: "UI UX",
   });
 
@@ -79,7 +80,7 @@ export default function FormSubmitGenetic() {
       formData.noKetua.trim() !== "" &&
       formData.judulInovasi.trim() !== "" &&
       formData.linkProposal.trim() !== "" &&
-      formData.linkYoutube.trim() !== ""
+      formData.linkMedia.trim() !== ""
     );
   };
 
@@ -110,7 +111,7 @@ export default function FormSubmitGenetic() {
         no_whatsapp: formData.noKetua,
         judul_inovasi: formData.judulInovasi,
         link_proposal_drive: formData.linkProposal,
-        link_youtube: formData.linkYoutube,
+        link_youtube: formData.linkMedia,
         kategori: formData.kategori,
       };
 
@@ -176,7 +177,7 @@ export default function FormSubmitGenetic() {
                   Kategori Lomba
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {["UI UX", "Innovation System Challenge"].map((cat) => (
+                  {["UI UX", "System Innovation Idea Competition"].map((cat) => (
                     <button
                       key={cat}
                       type="button"
@@ -315,22 +316,22 @@ export default function FormSubmitGenetic() {
                 </div>
               </motion.div>
 
-              {/* Link Youtube */}
+              {/* Link Media */}
               <motion.div variants={itemVariants}>
                 <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                  Link Tautan Youtube
+                  {formData.kategori === "UI UX" ? "Link Tautan Youtube" : "Link Tautan Poster (Instagram)"}
                 </label>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30">
-                    <FiYoutube />
+                    {formData.kategori === "UI UX" ? <FiYoutube /> : <FiInstagram />}
                   </span>
                   <input
                     type="url"
-                    name="linkYoutube"
+                    name="linkMedia"
                     required
-                    value={formData.linkYoutube}
+                    value={formData.linkMedia}
                     onChange={handleChange}
-                    placeholder="https://youtube.com/..."
+                    placeholder={formData.kategori === "UI UX" ? "https://youtube.com/..." : "https://instagram.com/..."}
                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-white/20 focus:ring-2 focus:ring-brand-sun outline-none transition-all bg-white/10 text-white"
                   />
                 </div>
