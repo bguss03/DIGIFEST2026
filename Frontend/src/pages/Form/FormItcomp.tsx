@@ -191,7 +191,9 @@ export default function FormItComp() {
           formData.buktiFollowKetua !== null &&
           formData.buktiPostKetua !== null
         );
-      case 3:
+      case 3: {
+        const isA1Empty = formData.anggota1.trim() === "" && formData.nimAnggota1.trim() === "" && formData.suratAnggota1 === null && formData.buktiFollowAnggota1 === null && formData.buktiPostA1 === null;
+        if (isA1Empty) return true;
         return (
           formData.anggota1.trim() !== "" &&
           formData.nimAnggota1.trim() !== "" &&
@@ -199,7 +201,10 @@ export default function FormItComp() {
           formData.buktiFollowAnggota1 !== null &&
           formData.buktiPostA1 !== null
         );
-      case 4:
+      }
+      case 4: {
+        const isA2Empty = formData.anggota2.trim() === "" && formData.nimAnggota2.trim() === "" && formData.suratAnggota2 === null && formData.buktiFollowAnggota2 === null && formData.buktiPostA2 === null;
+        if (isA2Empty) return true;
         return (
           formData.anggota2.trim() !== "" &&
           formData.nimAnggota2.trim() !== "" &&
@@ -207,7 +212,10 @@ export default function FormItComp() {
           formData.buktiFollowAnggota2 !== null &&
           formData.buktiPostA2 !== null
         );
-      case 5:
+      }
+      case 5: {
+        const isA3Empty = formData.anggota3.trim() === "" && formData.nimAnggota3.trim() === "" && formData.suratAnggota3 === null && formData.buktiFollowAnggota3 === null && formData.buktiPostA3 === null;
+        if (isA3Empty) return true;
         return (
           formData.anggota3.trim() !== "" &&
           formData.nimAnggota3.trim() !== "" &&
@@ -215,7 +223,10 @@ export default function FormItComp() {
           formData.buktiFollowAnggota3 !== null &&
           formData.buktiPostA3 !== null
         );
-      case 6:
+      }
+      case 6: {
+        const isA4Empty = formData.anggota4.trim() === "" && formData.nimAnggota4.trim() === "" && formData.suratAnggota4 === null && formData.buktiFollowAnggota4 === null && formData.buktiPostA4 === null;
+        if (isA4Empty) return true;
         return (
           formData.anggota4.trim() !== "" &&
           formData.nimAnggota4.trim() !== "" &&
@@ -223,6 +234,7 @@ export default function FormItComp() {
           formData.buktiFollowAnggota4 !== null &&
           formData.buktiPostA4 !== null
         );
+      }
       case 7:
         return formData.buktiBayar !== null && turnstileToken !== null;
       default:
@@ -361,18 +373,18 @@ export default function FormItComp() {
         uploadFile(formData.suratKetua!, "surat_ketua"),
         uploadFile(formData.buktiFollowKetua!, "follow_ketua"),
         uploadFile(formData.buktiPostKetua!, "post_ketua"),
-        uploadFile(formData.suratAnggota1!, "surat_a1"),
-        uploadFile(formData.buktiFollowAnggota1!, "follow_a1"),
-        uploadFile(formData.buktiPostA1!, "post_a1"),
-        uploadFile(formData.suratAnggota2!, "surat_a2"),
-        uploadFile(formData.buktiFollowAnggota2!, "follow_a2"),
-        uploadFile(formData.buktiPostA2!, "post_a2"),
-        uploadFile(formData.suratAnggota3!, "surat_a3"),
-        uploadFile(formData.buktiFollowAnggota3!, "follow_a3"),
-        uploadFile(formData.buktiPostA3!, "post_a3"),
-        uploadFile(formData.suratAnggota4!, "surat_a4"),
-        uploadFile(formData.buktiFollowAnggota4!, "follow_a4"),
-        uploadFile(formData.buktiPostA4!, "post_a4"),
+        formData.suratAnggota1 ? uploadFile(formData.suratAnggota1, "surat_a1") : Promise.resolve(null),
+        formData.buktiFollowAnggota1 ? uploadFile(formData.buktiFollowAnggota1, "follow_a1") : Promise.resolve(null),
+        formData.buktiPostA1 ? uploadFile(formData.buktiPostA1, "post_a1") : Promise.resolve(null),
+        formData.suratAnggota2 ? uploadFile(formData.suratAnggota2, "surat_a2") : Promise.resolve(null),
+        formData.buktiFollowAnggota2 ? uploadFile(formData.buktiFollowAnggota2, "follow_a2") : Promise.resolve(null),
+        formData.buktiPostA2 ? uploadFile(formData.buktiPostA2, "post_a2") : Promise.resolve(null),
+        formData.suratAnggota3 ? uploadFile(formData.suratAnggota3, "surat_a3") : Promise.resolve(null),
+        formData.buktiFollowAnggota3 ? uploadFile(formData.buktiFollowAnggota3, "follow_a3") : Promise.resolve(null),
+        formData.buktiPostA3 ? uploadFile(formData.buktiPostA3, "post_a3") : Promise.resolve(null),
+        formData.suratAnggota4 ? uploadFile(formData.suratAnggota4, "surat_a4") : Promise.resolve(null),
+        formData.buktiFollowAnggota4 ? uploadFile(formData.buktiFollowAnggota4, "follow_a4") : Promise.resolve(null),
+        formData.buktiPostA4 ? uploadFile(formData.buktiPostA4, "post_a4") : Promise.resolve(null),
         uploadFile(formData.buktiBayar!, "bukti_bayar"),
       ]);
 
@@ -766,12 +778,11 @@ export default function FormItComp() {
           >
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                Nama Anggota Tim - 1
+                Nama Anggota Tim - 1 (Opsional)
               </label>
               <input
                 type="text"
                 name="anggota1"
-                required
                 value={formData.anggota1}
                 onChange={handleChange}
                 placeholder="Nama lengkap anggota 1"
@@ -784,7 +795,7 @@ export default function FormItComp() {
             </motion.div>
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                NIM Anggota Tim - 1
+                NIM Anggota Tim - 1 (Opsional)
               </label>
               <div className="relative w-full">
                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-sun flex items-center justify-center">
@@ -794,7 +805,6 @@ export default function FormItComp() {
                 <input
                   type="text"
                   name="nimAnggota1"
-                  required
                   value={formData.nimAnggota1}
                   onChange={handleChange}
                   placeholder="G.xxx.xx.xxx"
@@ -949,12 +959,11 @@ export default function FormItComp() {
           >
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                Nama Anggota Tim - 2
+                Nama Anggota Tim - 2 (Opsional)
               </label>
               <input
                 type="text"
                 name="anggota2"
-                required
                 value={formData.anggota2}
                 onChange={handleChange}
                 placeholder="Nama lengkap anggota 2"
@@ -967,7 +976,7 @@ export default function FormItComp() {
             </motion.div>
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                NIM Anggota Tim - 2
+                NIM Anggota Tim - 2 (Opsional)
               </label>
               <div className="relative w-full">
                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-sun flex items-center justify-center">
@@ -977,7 +986,6 @@ export default function FormItComp() {
                 <input
                   type="text"
                   name="nimAnggota2"
-                  required
                   value={formData.nimAnggota2}
                   onChange={handleChange}
                   placeholder="G.xxx.xx.xxx"
@@ -1132,12 +1140,11 @@ export default function FormItComp() {
           >
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                Nama Anggota Tim - 3
+                Nama Anggota Tim - 3 (Opsional)
               </label>
               <input
                 type="text"
                 name="anggota3"
-                required
                 value={formData.anggota3}
                 onChange={handleChange}
                 placeholder="Nama lengkap anggota 3"
@@ -1150,7 +1157,7 @@ export default function FormItComp() {
             </motion.div>
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                NIM Anggota Tim - 3
+                NIM Anggota Tim - 3 (Opsional)
               </label>
               <div className="relative w-full">
                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-sun flex items-center justify-center">
@@ -1160,7 +1167,6 @@ export default function FormItComp() {
                 <input
                   type="text"
                   name="nimAnggota3"
-                  required
                   value={formData.nimAnggota3}
                   onChange={handleChange}
                   placeholder="G.xxx.xx.xxx"
@@ -1315,12 +1321,11 @@ export default function FormItComp() {
           >
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                Nama Anggota Tim - 4
+                Nama Anggota Tim - 4 (Opsional)
               </label>
               <input
                 type="text"
                 name="anggota4"
-                required
                 value={formData.anggota4}
                 onChange={handleChange}
                 placeholder="Nama lengkap anggota 4"
@@ -1333,7 +1338,7 @@ export default function FormItComp() {
             </motion.div>
             <motion.div variants={itemVariants}>
               <label className="block text-sm font-semibold text-white mb-1 uppercase tracking-wider">
-                NIM Anggota Tim - 4
+                NIM Anggota Tim - 4 (Opsional)
               </label>
               <div className="relative w-full">
                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-brand-sun flex items-center justify-center">
@@ -1343,7 +1348,6 @@ export default function FormItComp() {
                 <input
                   type="text"
                   name="nimAnggota4"
-                  required
                   value={formData.nimAnggota4}
                   onChange={handleChange}
                   placeholder="G.xxx.xx.xxx"
