@@ -1845,8 +1845,8 @@ export default function FormItComp() {
           </p>
           <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5 p-2">
             <img 
-              src="/poster.jpeg" 
-              alt="Poster Digifest" 
+              src="/itexpo.jpeg" 
+              alt="itexpo Digifest" 
               className="w-full h-auto rounded-xl max-h-120 object-contain bg-white/5"
             />
           </div>
